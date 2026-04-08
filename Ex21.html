@@ -1,68 +1,66 @@
 <!DOCTYPE html>
-<html>
-<head>
-<style>
-  highlight{
-    display:inline-block;
-    width:100px;
-    height:100px;
-    padding:5px;
-    border:1px solid blue;
-    background-color:yellow;
-  }
-  
-div {
-  position:absolute;
-  top:0;
-  right:300px;
-  background-color: white;
-  width: 200px;
-  height: 65px;
-  border: 3px solid green;
-  overflow: auto;
+<html lang="zh-TW">
+  /* 外層容器：設定陰影與邊框 */
+.main-container {
+    width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    font-family: serif;
+    line-height: 1.6;
 }
-</style>
+
+/* 右側浮動區塊 */
+.sidebar {
+    float: right;
+    width: 150px;
+    height: 150px;
+    border: 3px solid #76b900; /* 綠色邊框 */
+    margin-left: 15px;
+    padding: 10px;
+    overflow: auto; /* 超出範圍顯示捲軸 */
+    background-color: white;
+}
+
+/* 黃色背景的文字 (Inline-blocks) */
+.highlight {
+    display: inline-block;
+    background-color: yellow;
+    border: 1px solid blue; /* 藍色細邊框 */
+    padding: 0 5px;
+    margin: 0 2px;
+    line-height: 1.2;
+}
+
+/* 清除浮動影響，確保容器撐開 */
+.main-container::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+<head>
+    <meta charset="UTF-8">
+    <title>Web Page Practice</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p>
-I'm sittin' here in the boring room
-It's just another rainy Sunday afternoon
-I'm wastin' my time, I got nothin' to do
-I'm hangin' around, I'm waitin' for you
-But nothing ever happens
-I'm drivin' around in my car
-I'm drivin' too fast, I'm drivin' too far
-I'd like to change my point of view
-I feel so lonely, I'm waitin' for you
-But nothing ever happens and I wonder
-I wonder how, I wonder why
-Yesterday you told me 'bout the blue, blue sky
-And all that I can see is just another lemon tree
-I'm turnin' my head up and down
-I'm turnin', turnin', turnin', turnin', turnin' around
-And all that I can see is just another <span class="highlight">lemon tree</span>
-dah, dah-dah-dah-dah-dah, di-dah-dah
-Dah-dah-dah-dah-dah, di-dah-dah
-Dah-di-di-dah (dah-di-di-dah)
-(Sing) dah, dah-dah-dah-dah-dah, di-dah-dah
-Dah-dah-dah-dah-dah, di-dah-dah
-Dah-di-di-dah (dah-di-di-dah)
-I'm sittin' here, I missed the power
-I'd like to go out, takin' a shower
-But there's a heavy cloud inside my head
-I feel so tired, put myself into bed
-Well, nothing ever happens and I wonder
-I wonder how, I wonder why
-Yesterday you told me 'bout the blue, blue sky
-And all that I can see is just another lemon tree
-I'm turnin' my head up and down
-I'm turnin', turnin', turnin', turnin', turnin' around
-And all that I can see is just another lemon tree
-And I wonder
-</p>
-  
-<div>You can use the overflow property when you want to have better control of the layout. The overflow property specifies what happens if content overflows an element's box.</div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            A float div with overflow auto. A float div with overflow auto. A float div with overflow auto.
+        </div>
+
+        <p class="content">
+            (Just long sentence.) Let me not to the marriage of true minds Admit impediments. 
+            <span class="highlight">Love</span> is not love Which alters when it alteration finds, 
+            Or bends with the remover to remove: O, no! it is an ever-fix'ed mark, That looks on tempests and is never shaken; 
+            It is the star to every wand'ring bark, Whose worth's unknown, although his heighth be taken. 
+            <span class="highlight">Love's</span> not Time's fool, though rosy lips and cheeks Within his bending sickle's compass come; 
+            <span class="highlight">Love</span> alters not with his brief hours and weeks, But bears it out even to the edge of doom. 
+            If this be error and upon me proved, I never writ, nor no man ever loved.
+        </p>
+    </div>
 
 </body>
 </html>
-
