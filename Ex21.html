@@ -1,61 +1,88 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
     <meta charset="UTF-8">
-    <title>Web Page Practice</title>
-    <link rel="stylesheet" href="style.css">
-.main-container {
-    width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-    font-family: serif;
-    line-height: 1.6;
-}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Layout Practice</title>
+    <style>
+        /* 頁面背景與字體設定 */
+        body {
+            background-color: #f4f4f4;
+            padding: 20px;
+            font-family: "Times New Roman", Times, serif;
+        }
 
-.sidebar {
-    float: right;
-    width: 150px;
-    height: 150px;
-    border: 3px solid #76b900;
-    margin-left: 15px;
-    padding: 10px;
-    overflow: auto;
-    background-color: white;
-}
+        /* 外層白框容器 */
+        .main-container {
+            background-color: #fff;
+            width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            /* 模擬圖片中的陰影效果 */
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
 
-.highlight {
-    display: inline-block;
-    background-color: yellow;
-    border: 1px solid blue; 
-    padding: 0 5px;
-    margin: 0 2px;
-    line-height: 1.2;
-}
+        /* 右側綠框浮動區塊 (A float div with overflow auto) */
+        .sidebar {
+            float: right;
+            width: 180px;
+            height: 180px;
+            border: 3px solid #84cf00; /* 綠色粗邊框 */
+            margin-left: 20px;
+            padding: 10px;
+            overflow-y: auto; /* 內容超出時顯示垂直捲軸 */
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #333;
+        }
 
+        /* 主要段落文字 */
+        .content {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 0;
+            color: #111;
+        }
 
-.main-container::after {
-    content: "";
-    display: block;
-    clear: both;
-}
+        /* 黃色背景的行內區塊 (Some inline-blocks) */
+        .highlight {
+            display: inline-block; /* 關鍵：設定為行內區塊 */
+            background-color: #ffff00; /* 黃色背景 */
+            border: 1px solid #0000ff; /* 藍色細邊框 */
+            padding: 2px 8px;
+            margin: 0 2px;
+            vertical-align: middle;
+        }
+
+        /* 清除浮動：確保外層容器能被撐開 */
+        .main-container::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
 </head>
 <body>
 
     <div class="main-container">
         <div class="sidebar">
-            A float div with overflow auto. A float div with overflow auto. A float div with overflow auto.
+            A float div with overflow auto. A float div with overflow auto. 
+            A float div with overflow auto. A float div with overflow auto.
+            A float div with overflow auto. A float div with overflow auto.
         </div>
 
         <p class="content">
             (Just long sentence.) Let me not to the marriage of true minds Admit impediments. 
             <span class="highlight">Love</span> is not love Which alters when it alteration finds, 
-            Or bends with the remover to remove: O, no! it is an ever-fix'ed mark, That looks on tempests and is never shaken; 
-            It is the star to every wand'ring bark, Whose worth's unknown, although his heighth be taken. 
-            <span class="highlight">Love's</span> not Time's fool, though rosy lips and cheeks Within his bending sickle's compass come; 
-            <span class="highlight">Love</span> alters not with his brief hours and weeks, But bears it out even to the edge of doom. 
+            Or bends with the remover to remove: O, no! it is an ever-fix'ed mark, 
+            That looks on tempests and is never shaken; It is the star to every wand'ring bark, 
+            Whose worth's unknown, although his heighth be taken. 
+            <span class="highlight">Love's</span> not Time's fool, though rosy lips and cheeks 
+            Within his bending sickle's compass come; 
+            <span class="highlight">Love</span> alters not with his brief hours and weeks, 
+            But bears it out even to the edge of doom. 
             If this be error and upon me proved, I never writ, nor no man ever loved.
         </p>
     </div>
