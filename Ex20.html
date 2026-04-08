@@ -2,21 +2,14 @@
 <html>
 <head>
 <style>
-div.relative {
+div.fixed {
   position: relative;
   width: 400px;
   height: 200px;
   border: 3px solid green;
 } 
 
-div.absolute {
-  position: absolute;
-  top: 80px;
-  right: 0;
-  width: 200px;
-  height: 100px;
-  border: 3px solid red;
-}
+
 </style>
 </head>
 <body>
@@ -40,13 +33,11 @@ div.absolute {
   </tr>
  
 </table>
-  
-<h2>Using position: absolute;</h2>
 
-<p>An element with position: absolute; is positioned relative to the nearest positioned ancestor:</p>
+
 
 <div class="relative">This div element has position: relative;
-  <div class="absolute">This div element has position: absolute;</div>
+  <div class="fixed">This div element has position: fixed;</div>
 </div>
   
 </body>
