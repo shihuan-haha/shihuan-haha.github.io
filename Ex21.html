@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Web Page Practice</title>
     <link rel="stylesheet" href="style.css">
-  /* 外層容器：設定陰影與邊框 */
 .main-container {
     width: 600px;
     margin: 50px auto;
@@ -16,29 +15,27 @@
     line-height: 1.6;
 }
 
-/* 右側浮動區塊 */
 .sidebar {
     float: right;
     width: 150px;
     height: 150px;
-    border: 3px solid #76b900; /* 綠色邊框 */
+    border: 3px solid #76b900;
     margin-left: 15px;
     padding: 10px;
-    overflow: auto; /* 超出範圍顯示捲軸 */
+    overflow: auto;
     background-color: white;
 }
 
-/* 黃色背景的文字 (Inline-blocks) */
 .highlight {
     display: inline-block;
     background-color: yellow;
-    border: 1px solid blue; /* 藍色細邊框 */
+    border: 1px solid blue; 
     padding: 0 5px;
     margin: 0 2px;
     line-height: 1.2;
 }
 
-/* 清除浮動影響，確保容器撐開 */
+
 .main-container::after {
     content: "";
     display: block;
