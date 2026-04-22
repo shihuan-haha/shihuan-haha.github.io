@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Image Styling Practice</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        img {
+            height: 300px;
+        }
+
+        /* Left Image: Rounded corners, No distortion */
+        .img-left {
+            width: 33%;
+            border-radius: 18px;
+            object-fit: cover; /* Prevents distortion by cropping to fit */
+        }
+
+        /* Center Image: Circular, No distortion */
+        .img-center {
+            width: 150px;
+            height: 150px; /* Overriding height for a perfect circle */
+            border-radius: 150px; /* Or 50% */
+            object-fit: cover;
+        }
+
+        /* Right Image: Sharp corners, Distorted */
+        .img-right {
+            width: 33%;
+            /* No object-fit: fill is the default behavior when 
+               width/height are forced, causing distortion */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="paris.jpg" alt="Eiffel Tower" class="img-left">
+        <img src="nature.jpg" alt="Nature" class="img-center">
+        <img src="paris.jpg" alt="Eiffel Tower" class="img-right">
+    </div>
+
+</body>
+</html>
