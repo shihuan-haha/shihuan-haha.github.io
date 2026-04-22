@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Layout</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #4da6ff; padding: 20px; margin: 0; }
+        
+        .container { 
+            background-color: white; 
+            padding: 15px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            border-radius: 8px;
+        }
 
+        /* Common Styles */
+        .section { margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .box { border-radius: 4px; }
+
+        /* Header (Green) */
+        .header { background-color: #a6d94d; height: 100px; width: 100%; }
+
+        /* Content (Cyan) */
+        .content-box { background-color: #00bcd4; height: 80px; width: 100%; }
+
+        /* Footer (Grey) */
+        .footer-box { background-color: #eceff1; height: 50px; width: calc(50% - 5px); }
+
+        /* --- Desktop View (Width >= 480px) --- */
+        @media screen and (min-width: 480px) {
+            .content-box { width: calc(33.33% - 7px); } /* 3 Columns */
+            .footer-box { width: calc(25% - 8px); }    /* 4 Columns */
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="section">
+        <div class="header box"></div>
+    </div>
+
+    <div class="section">
+        <div class="content-box box"></div>
+        <div class="content-box box"></div>
+        <div class="content-box box"></div>
+    </div>
+
+    <div class="section">
+        <div class="footer-box box"></div>
+        <div class="footer-box box"></div>
+        <div class="footer-box box"></div>
+        <div class="footer-box box"></div>
+    </div>
+</div>
+
+</body>
+</html>
