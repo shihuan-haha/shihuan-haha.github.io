@@ -1,18 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<style>
-img:hover {
-  transform: scaleX(-1);
-}
-</style>
+    <meta charset="UTF-8">
+    <title>CSS 圖片練習</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px 0;
+        }
+
+        .container {
+            display: flex;
+            align-items: center; /* 讓不同高度的圖垂直對齊 */
+            justify-content: center;
+            gap: 20px; /* 圖片之間的間距 */
+        }
+
+        img {
+            height: 300px; /* 統一側邊圖的高度 */
+        }
+
+        /* 左圖：圓角 18px，寬度 33%，不變形 */
+        .img-left {
+            width: 33%;
+            border-radius: 18px;
+            object-fit: cover; 
+        }
+
+        /* 中圖：正圓形，150x150px，不變形 */
+        .img-center {
+            width: 150px;
+            height: 150px; 
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 加點陰影更好看 */
+        }
+
+        /* 右圖：寬度 33%，故意產生變形 */
+        .img-right {
+            width: 33%;
+            /* 預設行為會導致縮放變形 */
+        }
+    </style>
 </head>
 <body>
 
-<h2>Flip an Image</h2>
-<p>Move your mouse over the image.</p>
-
-<img src="paris.jpg" alt="Paris" width="400" height="300">
+    <div class="container">
+        <img src="eiffel.jpg" alt="艾菲爾鐵塔" class="img-left">
+        <img src="nature.png" alt="自然風景" class="img-center">
+        <img src="eiffel.jpg" alt="艾菲爾鐵塔" class="img-right">
+    </div>
 
 </body>
 </html>
