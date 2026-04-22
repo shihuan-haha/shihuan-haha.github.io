@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Bootstrap Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        /* 稍微增加一點間距讓畫面更美觀 */
+        body { padding-top: 30px; }
+        .form-group { margin-top: 20px; }
+    </style>
+</head>
+<body>
 
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>My First Bootstrap Page</h1>
+    </div>
+
+    <div class="form-group">
+        <label for="usr">Input:</label>
+        <input type="text" class="form-control" id="usr">
+    </div>
+
+    <div class="alert alert-success">
+        Successful alert
+    </div>
+
+    <button type="button" class="btn btn-default">
+        Button <span class="badge">badge</span>
+    </button>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
