@@ -1,51 +1,56 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>CSS Image Styling Practice</title>
+    <title>CSS 圖片練習</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px 0;
+        }
+
         .container {
             display: flex;
-            align-items: center;
-            justify-content: space-around;
-            background-color: #f0f0f0;
-            padding: 20px;
+            align-items: center; /* 讓不同高度的圖垂直對齊 */
+            justify-content: center;
+            gap: 20px; /* 圖片之間的間距 */
         }
 
         img {
-            height: 300px;
+            height: 300px; /* 統一側邊圖的高度 */
         }
 
-        /* Left Image: Rounded corners, No distortion */
+        /* 左圖：圓角 18px，寬度 33%，不變形 */
         .img-left {
             width: 33%;
             border-radius: 18px;
-            object-fit: cover; /* Prevents distortion by cropping to fit */
+            object-fit: cover; 
         }
 
-        /* Center Image: Circular, No distortion */
+        /* 中圖：正圓形，150x150px，不變形 */
         .img-center {
             width: 150px;
-            height: 150px; /* Overriding height for a perfect circle */
-            border-radius: 150px; /* Or 50% */
+            height: 150px; 
+            border-radius: 50%;
             object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 加點陰影更好看 */
         }
 
-        /* Right Image: Sharp corners, Distorted */
+        /* 右圖：寬度 33%，故意產生變形 */
         .img-right {
             width: 33%;
-            /* No object-fit: fill is the default behavior when 
-               width/height are forced, causing distortion */
+            /* 預設行為會導致縮放變形 */
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="paris.jpg" alt="Eiffel Tower" class="img-left">
-        <img src="nature.jpg" alt="Nature" class="img-center">
-        <img src="paris.jpg" alt="Eiffel Tower" class="img-right">
+        <img src="eiffel.jpg" alt="艾菲爾鐵塔" class="img-left">
+        <img src="nature.png" alt="自然風景" class="img-center">
+        <img src="eiffel.jpg" alt="艾菲爾鐵塔" class="img-right">
     </div>
 
 </body>
