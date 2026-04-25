@@ -29,19 +29,18 @@
         <div>size: h22/R8</div>
         <div>Roboto regular</div>
         <div>outline 1px #2f2f2</div>
-         <div style="color: #0084ff;">Font stlye</div>
+    </div>
+   <div id="row-info">
+      <div style="color: #0084ff;">Font stlye</div>
         <div>Roboto Regular 13px</div>
         <div>color: #ffffff</div>
-    </div>
-  
-      
-    
+   </div>
 
     <script>
         // 3. JavaScript：控制資訊顯示或隱藏
         function showDetails() {
             var info = document.getElementById("spec-info");
-            
+            var info = document.getElementById("row-info");
             // 如果目前是隱藏的，就顯示；如果是顯示的，就隱藏
             if (info.style.display === "none" || info.style.display === "") {
                 info.style.display = "block";
