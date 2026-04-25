@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Button Spec Demo</title>
+   
     <style>
         /* 1. 按鈕本身的設計 (h22 / R8 / #2f2f2f) */
         .spec-button {
+            size: h22/R8 = height:22, radius:8
             height: 22px;
             border-radius: 8px;
             border: 1px solid #2f2f2f;
@@ -19,17 +19,7 @@
             justify-content: center;
         }
 
-        /* 2. 詳細資訊區塊：預設是隱藏的 (none) */
-        #spec-info {
-            display: none; 
-            margin-top: 15px;
-            padding: 10px;
-            border-top: 1px solid #cfddff;
-            font-family: sans-serif;
-            font-size: 13px;
-            color: #707070;
-            line-height: 1.6;
-        }
+       
     </style>
 </head>
 <body>
@@ -37,10 +27,15 @@
     <button class="spec-button" onclick="showDetails()">查看資訊</button>
 
     <div id="spec-info">
-        <div>修改日期：2017/10/12</div>
-        <div>類型：JPG</div>
-        <div>大小：466.97 KB</div>
-        <div style="color: #0084ff;">路徑：\\designcenter\A_Image2PDFv2\sample</div>
+        size: h22/R8 = height:22, radius:8
+        <div>size: h22/R8</div>
+        <div>Roboto regular</div>
+        <div>outline 1px #2f2f2</div>
+    </div>
+    <div>
+        <div style="color: #0084ff;">Font stlye</div>
+        <div>Roboto regular</div>
+        <div>color: #ffffff</div>
     </div>
 
     <script>
