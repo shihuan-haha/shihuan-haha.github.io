@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-   
+    <meta charset="UTF-8">
     <style>
         .spec-button {
-            size: h22/R8 = height:22, radius:8
+            /* 修正：原本這行中文註解寫在 CSS 裡會導致後方失效，已移除 */
             height: 22px;
             border-radius: 8px;
             border: 1px solid #2f2f2f;
@@ -18,17 +18,36 @@
             justify-content: center;
         }
 
-       
+        /* 關鍵：控制大盒子 */
+        #all-info-container {
+            display: none; /* 預設隱藏 */
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #cfddff;
+        }
+
+        /* 關鍵中的關鍵：這段沒寫就不會變兩排 */
+        .flex-layout {
+            display: flex;    /* 啟動並排模式 */
+            gap: 60px;        /* 讓左排跟右排中間有空隙 */
+        }
+
+        .info-column {
+            font-size: 13px;
+            color: #707070;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
     <button class="spec-button" onclick="showDetails()">查看資訊</button>
-<div id="all-info-container">
+
+    <div id="all-info-container">
         <div class="flex-layout">
             
             <div class="info-column">
-                <div>Size: h22/R8</div>
+                <div style="font-weight: bold;">Size: h22/R8</div>
                 <div>Roboto Regular</div>
                 <div>Outline: 1px #2f2f2f</div>
             </div>
@@ -41,15 +60,14 @@
 
         </div>
     </div>
-    
+
     <script>
-        // 3. JavaScript：控制資訊顯示或隱藏
         function showDetails() {
             var info = document.getElementById("all-info-container");
-           
-            // 如果目前是隱藏的，就顯示；如果是顯示的，就隱藏
+            
+            // 這裡顯示 block 即可，因為內層的 flex-layout 會負責並排
             if (info.style.display === "none" || info.style.display === "") {
-                info.style.display = "flex";
+                info.style.display = "block";
             } else {
                 info.style.display = "none";
             }
