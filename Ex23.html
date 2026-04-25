@@ -1,36 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Button Spec Demo</title>
+    <style>
+        /* 1. 按鈕本身的設計 (h22 / R8 / #2f2f2f) */
+        .spec-button {
+            height: 22px;
+            border-radius: 8px;
+            border: 1px solid #2f2f2f;
+            background-color: #ffffff;
+            color: #2f2f2f;
+            font-size: 13px;
+            padding: 0 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 2. 詳細資訊區塊：預設是隱藏的 (none) */
+        #spec-info {
+            display: none; 
+            margin-top: 15px;
+            padding: 10px;
+            border-top: 1px solid #cfddff;
+            font-family: sans-serif;
+            font-size: 13px;
+            color: #707070;
+            line-height: 1.6;
+        }
+    </style>
+</head>
 <body>
-<button class="spec-button">查看資訊</button>
-  </body>
 
-<style>.spec-button {
-  /* Dimensions & Shape */
-  height: 22px;
-  border-radius: 8px;
-  padding: 0 12px; /* Horizontal padding for text breathing room */
-  
-  /* Colors */
-  background-color: #ffffff;
-  border: 1px solid #2f2f2f;
-  color: #2f2f2f;
-  
-  /* Typography */
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  line-height: 1;
-  
-  /* Behavior */
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
-}
+    <button class="spec-button" onclick="showDetails()">查看資訊</button>
 
-.spec-button:hover {
-  background-color: #f2f2f2;
-}
+    <div id="spec-info">
+        <div>修改日期：2017/10/12</div>
+        <div>類型：JPG</div>
+        <div>大小：466.97 KB</div>
+        <div style="color: #0084ff;">路徑：\\designcenter\A_Image2PDFv2\sample</div>
+    </div>
 
-.spec-button:active {
-  background-color: #e6e6e6;
-}
-</style>
+    <script>
+        // 3. JavaScript：控制資訊顯示或隱藏
+        function showDetails() {
+            var info = document.getElementById("spec-info");
+            
+            // 如果目前是隱藏的，就顯示；如果是顯示的，就隱藏
+            if (info.style.display === "none" || info.style.display === "") {
+                info.style.display = "block";
+            } else {
+                info.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
