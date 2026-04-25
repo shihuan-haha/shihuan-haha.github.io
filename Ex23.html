@@ -24,23 +24,29 @@
 <body>
 
     <button class="spec-button" onclick="showDetails()">查看資訊</button>
+<div id="all-info-container">
+        <div class="flex-layout">
+            
+            <div class="info-column">
+                <div style="font-weight: bold;">Size: h22/R8</div>
+                <div>Roboto Regular</div>
+                <div>Outline: 1px #2f2f2f</div>
+            </div>
 
-    <div id="spec-info">
-        <div>size: h22/R8</div>
-        <div>Roboto regular</div>
-        <div>outline 1px #2f2f2</div>
+            <div class="info-column">
+                <div style="color: #0084ff; font-weight: bold;">Font Style</div>
+                <div>Roboto Regular 13px</div>
+                <div>Color: #2f2f2f</div>
+            </div>
+
+        </div>
     </div>
-   <div id="row-info">
-      <div style="color: #0084ff;">Font stlye</div>
-        <div>Roboto Regular 13px</div>
-        <div>color: #ffffff</div>
-   </div>
-
+    
     <script>
         // 3. JavaScript：控制資訊顯示或隱藏
         function showDetails() {
-            var info = document.getElementById("spec-info");
-            var info = document.getElementById("row-info");
+            var info = document.getElementById("all-info-container");
+           
             // 如果目前是隱藏的，就顯示；如果是顯示的，就隱藏
             if (info.style.display === "none" || info.style.display === "") {
                 info.style.display = "block";
