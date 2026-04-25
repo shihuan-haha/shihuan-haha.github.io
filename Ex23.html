@@ -1,107 +1,32 @@
+<button class="spec-button">查看資訊</button>
+.spec-button {
+  /* Dimensions & Shape */
+  height: 22px;
+  border-radius: 8px;
+  padding: 0 12px; /* Horizontal padding for text breathing room */
+  
+  /* Colors */
+  background-color: #ffffff;
+  border: 1px solid #2f2f2f;
+  color: #2f2f2f;
+  
+  /* Typography */
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  
+  /* Behavior */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Spec Implementation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f6f6f6;
-            display: flex;
-            justify-content: center;
-            padding: 50px;
-        }
+.spec-button:hover {
+  background-color: #f2f2f2;
+}
 
-        .container {
-            width: 496px; /* Based on the blue measurement line */
-            background: #ffffff;
-            padding: 20px;
-            border: 1px solid #eaeaea;
-            text-align: center;
-        }
-
-        .main-image {
-            width: 450px;
-            height: 240px;
-            background-color: #ddd;
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-
-        /* --- THE DESIGNED BUTTON --- */
-        .info-btn {
-            /* size: h22 / R8 */
-            height: 22px;
-            border-radius: 8px;
-            
-            /* colors */
-            background-color: #ffffff;
-            border: 1px solid #2f2f2f;
-            color: #2f2f2f;
-            
-            /* font style */
-            font-size: 13px;
-            font-family: 'Roboto', sans-serif;
-            
-            padding: 0 15px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .info-btn:hover {
-            background-color: #f2f2f2;
-        }
-
-        /* --- DETAILS SECTION --- */
-        #details-panel {
-            display: none; /* Hidden by default */
-            margin-top: 20px;
-            text-align: left;
-            border-top: 1px solid #cfddff;
-            padding-top: 15px;
-        }
-
-        .info-row {
-            font-size: 13px;
-            color: #707070;
-            padding: 5px 0;
-            border-bottom: 1px solid #eaeaea;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <img src="https://via.placeholder.com/450x240" alt="Landscape" class="main-image">
-    
-    <div style="text-align: right; margin-bottom: 10px;">
-        <button class="info-btn" onclick="toggleDetails()">查看資訊</button>
-    </div>
-
-    <div id="details-panel">
-        <div class="info-row">日期：2017/10/12</div>
-        <div class="info-row">類型：JPG</div>
-        <div class="info-row">大小：466.97 KB</div>
-        <div class="info-row" style="color: #0084ff;">路徑：\\designcenter\projects\sample_image.jpg</div>
-    </div>
-</div>
-
-<script>
-    function toggleDetails() {
-        const panel = document.getElementById('details-panel');
-        if (panel.style.display === "none" || panel.style.display === "") {
-            panel.style.display = "block";
-        } else {
-            panel.style.display = "none";
-        }
-    }
-</script>
-
-</body>
-</html>
+.spec-button:active {
+  background-color: #e6e6e6;
+}
