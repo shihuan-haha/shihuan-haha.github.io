@@ -1,1 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>職場薪資與福利透明度儀表板（範例）</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 16px; background:#f7f9fc; color:#222; }
+    .container { max-width:1100px; margin:0 auto; }
+    header { margin-bottom:12px; }
+    h1 { font-size:20px; margin:8px 0; }
+    .grid { display:grid; grid-template-columns: 320px 1fr; gap:16px; }
+    .card { background:#fff; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+    label { display:block; margin:8px 0 4px; font-size:13px; color:#444; }
+    select,input[type=number] { width:100%; padding:8px; border:1px solid #d8dde6; border-radius:6px; }
+    .small { font-size:13px; color:#666; margin-top:8px; }
+    .charts { display:grid; grid-template-columns: 1fr 420px; gap:16px; }
+    canvas { background:#fff; border-radius:8px; }
+    .row { display:flex; gap:8px; align-items:center; margin-top:8px;}
+    button { padding:8px 12px; border-radius:6px; border:none; background:#2563eb; color:#fff; cursor:pointer; }
+    button.secondary { background:#e6eefc; color:#1f3b68; }
+    .notice { font-size:13px; color:#9b1c1c; margin-top:8px; }
+    .muted { font-size:13px; color:#666; margin-top:6px; }
+    footer { margin-top:14px; font-size:13px; color:#666; }
+    @media (max-width:900px){ .grid{ grid-template-columns:1fr; } .charts{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>職場薪資與福利透明度儀表板（範例）</h1>
+      <div class="muted">輸入職位、工齡、性別、地區，即時比較薪資中位數與福利分配。示範用假資料與前端邏輯。</div>
+    </header>
+
+    <div class="grid">
+      <div class="card" id="controls">
+        <label for="position">工作職位</label>
+        <select id="position">
+          <option value="software_engineer">軟體工程師</option>
+          <option value="product_manager">產品經理</option>
+          <option value="designer">設計師</option>
+          <option value="sales">業務</option>
+          <option value="nurse">護理師</option>
+        </select>
+
+        <label for="experience">工齡（年）</label>
+        <input id="experience" type="number" min="0" max="50" value="3" />
+
+        <label for="gender">性別</label>
+        <select id="gender">
+          <option value="female">女性</option>
+          <option value="male">男性</option>
+          <option value="nonbinary">非二元 / 其他</option>
+          <option value="prefer_not">不願透露</option>
+        </select>
+
+        <label for="region">地區</label>
+        <select id="region">
+          <option value="taipei">台北市</option>
+          <option value="taichung">台中市</option>
+          <option value="kaohsiung">高雄市</option>
+          <option value="remote">遠距/其他</option>
+        </select>
+
+        <div class="row">
+          <button id="btnUpdate">更新圖表</button>
+          <button id="btnExport" class="secondary">匯出圖表（PNG）</button>
+        </div>
+
+        <div id="sampleNotice" class="notice" style="display:none;">樣本量不足：該細分群組資料少於安全顯示門檻，僅提供匯總參考。</div>
+
+        <div class="muted">資料處理與匿名化：示範系統在展示前會進行去識別化與匯總；若群組樣本過少將禁止細分顯示。</div>
+
+        <hr />
+
+        <h3 style="margin:8px 0;">權益計算機 — 加班費估算</h3>
+        <label for="monthlySalary">月薪（新台幣）</label>
+        <input id="monthlySalary" type="number" value="60000" />
+        <label for="overtimeHours">本月可計算加班時數（小時）</label>
+        <input id="overtimeHours" type="number" value="10" />
+        <div class="row">
+          <button id="calcOvertime">計算加班費</button>
+          <div id="overtimeResult" class="muted"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card charts">
+          <div style="padding:12px;">
+            <h3 style="margin:4px 0 8px;">薪資中位數比較</h3>
+            <canvas id="barChart" height="300"></canvas>
+            <div class="small" style="margin-top:8px;">顯示同職位在所選地區與不同性別的薪資中位數。</div>
+          </div>
+
+          <div style="padding:12px;">
+            <h3 style="margin:4px 0 8px;">福利比例</h3>
+            <canvas id="pieChart" height="200"></canvas>
+            <div class="small">年假、產假/育嬰、加班補償、保險等項目占比（示例）。</div>
+
+            <h3 style="margin:12px 0 8px;">趨勢（5年）</h3>
+            <canvas id="lineChart" height="150"></canvas>
+            <div class="small">歷年薪資中位數趨勢（示例）。</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <h3 style="margin:4px 0 8px;">快速摘要</h3>
+          <div id="summary" class="muted">請點「更新圖表」以顯示摘要。</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      資料來源示範：假資料 (client-side)。正式系統請以授權資料來源與匿名化流程為準。
+    </footer>
+  </div>
+
+<script>
+/* ===== 假資料集（前端示範用） =====
+   在實作時，把此部分改成從後端 API 請求已匯總與匿名化的數據。
+*/
+const sampleData = {
+  // structure: position -> region -> gender -> {median, count}
+  software_engineer: {
+    taipei: {
+      female: {median: 70000, count: 120},
+      male: {median: 78000, count: 200},
+      nonbinary: {median: 72000, count: 8},
+      prefer_not: {median: 75000, count: 15}
+    },
+    taichung: {
+      female: {median: 58000, count: 40},
+      male: {median: 62000, count: 70},
+      nonbinary: {median: 60000, count: 2},
+      prefer_not: {median: 61000, count: 4}
+    },
+    kaohsiung: {
+      female: {median: 56000, count: 30},
+      male: {median: 59000, count: 55},
+      nonbinary: {median: 0, count: 0},
+      prefer_not: {median: 58000, count: 3}
+    },
+    remote: {
+      female: {median: 68000, count: 25},
+      male: {median: 72000, count: 40},
+      nonbinary: {median: 70000, count: 4},
+      prefer_not: {median: 69500, count: 3}
+    }
+  },
+  product_manager: {
+    taipei: { female:{median:80000,count:50}, male:{median:88000,count:80}, nonbinary:{median:82000,count:3}, prefer_not:{median:0,count:0} },
+    taichung: { female:{median:65000,count:12}, male:{median:70000,count:18}, nonbinary:{median:0,count:0}, prefer_not:{median:0,count:0} },
+    kaohsiung: { female:{median:62000,count:7}, male:{median:65000,count:12
 
