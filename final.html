@@ -291,24 +291,7 @@
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        function generateSolutions(gender, edu) {
-            const grid = document.getElementById('solutionGrid');
-            const sols = [
-                { title: "數據化議價策略", icon: "📊", desc: "將此內建診斷報告存檔，於年度績效考核時作為數據支持。官方數據能幫助您打破資方資訊不對稱。" },
-                { title: "法律權益保障", icon: "⚖️", desc: "查閱《性別工作平等法》第15條。若確定同工不同酬，可聯繫所在地勞工局申請免費調解。" }
-            ];
-            if (gender === 'female') sols.push({ title: "職場女性互助", icon: "✊", desc: "加入如 Women in Tech 等平權社群，獲取職場盟友的支持與談判技巧指導。" });
-            else if (edu === '高中' || edu === '國中及以下') sols.push({ title: "技能溢價轉型", icon: "🚀", desc: "數據顯示學歷與薪資強烈正相關。建議參加職訓局方案獲取專業證照以提升報酬。" });
-            else sols.push({ title: "跳槽行情測試", icon: "🔍", desc: "若公司薪資長期凍結，建議更新履歷進行外部面試，外部定價是修正報酬最快的方式。" });
-
-            grid.innerHTML = sols.map(s => `
-                <div class="solution-card bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                    <div class="text-2xl mb-3">${s.icon}</div>
-                    <h6 class="font-bold mb-2 text-slate-800">${s.title}</h6>
-                    <p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p>
-                </div>
-            `).join('');
-        }
+        
     </script>
 </body>
 </html>
