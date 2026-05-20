@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle Properties Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 15px;
+            font-weight: bold;
+            padding: 10px;
+            background: #e9ecef;
+            border-left: 5px solid #007BFF;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h2>Circle Calculator</h2>
+    <label for="radius">Enter Radius:</label>
+    <input type="number" id="radius" placeholder="e.g., 5" min="0" step="any">
+    
+    <button onclick="handleCalculation()">Calculate</button>
+
+    <div id="circumference-result" class="output">The circumference is NN</div>
+    <div id="area-result" class="output">The area is NN</div>
+</div>
+
+<script>
+    // 1. Function to calculate and output the circumference
+    function calcCircumfrence(radius) {
+        // Circumference formula: 2 * pi * r
+        const circumference = 2 * Math.PI * radius;
+        
+        // Target the element and update the text output
+        // .toFixed(2) is used to keep the decimals clean
+        document.getElementById('circumference-result').innerText = 
+            "The circumference is " + circumference.toFixed(2);
+    }
+
+    // 2. Function to calculate and output the area
+    function calcArea(radius) {
+        // Area formula: pi * r^2
+        const area = Math.PI * Math.pow(radius, 2);
+        
+        // Target the element and update the text output
