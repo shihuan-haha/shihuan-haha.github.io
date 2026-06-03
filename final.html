@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -32,7 +31,11 @@
             <div class="hidden md:flex gap-8 items-center">
                 <a href="#stats" class="text-slate-500 hover:text-indigo-600 font-bold transition">趨勢分析</a>
                 <a href="#compare" class="text-slate-500 hover:text-indigo-600 font-bold transition">薪資診斷</a>
-                <div class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-100">
+                <div class="flex items-center gap-2 bg-slate-100 rounded-full p-1 text-xs font-bold">
+                    <button onclick="setLanguage('zh')" id="lang-zh" class="px-3 py-1 rounded-full bg-indigo-600 text-white transition">中文</button>
+                    <button onclick="setLanguage('en')" id="lang-en" class="px-3 py-1 rounded-full text-slate-600 hover:text-indigo-600 transition">EN</button>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-100" id="dataStatus">
                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                     已自動載入 110-113 年官方完整數據
                 </div>
@@ -190,6 +193,221 @@
     </footer>
 
     <script>
+        // 語言切換功能：只切換畫面文字，不改變原本資料與計算邏輯
+        let currentLang = 'zh';
+
+        const I18N = {
+            zh: {
+                pageTitle: "EqualPay - 內建大數據薪資儀表板 (SDG 10)",
+                navStats: "趨勢分析",
+                navCompare: "薪資診斷",
+                status: "已自動載入 110-113 年官方完整數據",
+                badge: "SDG 10：減少職場不平等",
+                heroTitle: "數據驅動，<br>零門檻看見公平",
+                heroDesc: "無需上傳任何檔案。本系統已內建主計總處 110-113 年所有統計數據，點擊即可獲得精準的薪資診斷與行動建議。",
+                trendTitle: "110-113 全國性別薪資落差趨勢",
+                ageTitle: "113年全產業年齡別薪資中位數",
+                trendNote: "※ 自動分析：全國性別薪資差距從 14.1% 逐步縮減至 12.5%。",
+                ageNote: "※ 發現：薪資隨年齡顯著增長，並在 40-49 歲達到高峰。",
+                compareTitle: "即時薪資公平性診斷",
+                compareDesc: "免讀檔分析：自動連動 8 份年度官方報表進行交叉比對",
+                labels: ["年份 (自動匹配報表)", "最高教育程度", "年齡層分組", "您的行業別 (全分類)", "月薪 (TWD)"],
+                salaryPlaceholder: "如：55000",
+                male: "男性",
+                female: "女性",
+                calculate: "產出公平性診斷報告",
+                resultDefault: "診斷中",
+                solutionTitle: "改善方案與行動建議",
+                footerSource: "數據引用來源：勞動部與主計總處 110-113 年「各業受僱員工薪資統計表1 & 表2」",
+                footerCopy: "© 2024 EQUALPAY PROJECT. SDG 10 減少不平等行動實踐.",
+                lineDataset: "全國性別薪資落差 (%)",
+                barDataset: "113年全國中位數 (萬)",
+                alertMissing: "請填寫薪資並選擇性別",
+                resultBelowTitle: "低於公平基準線",
+                resultFairTitle: "符合市場公平基準",
+                resultBelowText: "您的報酬顯著低於市場平均水平。在 SDG 10 的視角下，這反映了資源分配的不平等，建議參考下方解決方案。",
+                resultFairText: "您的薪資處於合理區間。這顯示您所在的職場具有較佳的公平性，請繼續維持專業發展。",
+                resultTemplate: (year, edu, industry, amount) => `在 ${year} 官方數據中，具備「${edu}」學歷且位於「${industry}」的受僱者，公平基準月薪約為 <strong>${amount}</strong> 元。`,
+                yearLabels: ['110年', '111年', '112年', '113年'],
+                ageChartLabels: ['未滿25', '25-29', '30-39', '40-49', '50-64']
+            },
+            en: {
+                pageTitle: "EqualPay - Built-in Salary Data Dashboard (SDG 10)",
+                navStats: "Trend Analysis",
+                navCompare: "Salary Diagnosis",
+                status: "Loaded official data from ROC Years 110-113",
+                badge: "SDG 10: Reducing Workplace Inequality",
+                heroTitle: "Data-driven insights,<br>fairness with zero barriers",
+                heroDesc: "No file upload required. This system includes official salary statistics from ROC Years 110-113 and provides instant salary diagnosis and action suggestions.",
+                trendTitle: "National Gender Pay Gap Trend, ROC Years 110-113",
+                ageTitle: "2024 Median Salary by Age Group Across Industries",
+                trendNote: "※ Auto analysis: the national gender pay gap changed from 14.1% to 12.5%.",
+                ageNote: "※ Finding: salary increases by age group and peaks at ages 40-49.",
+                compareTitle: "Real-time Salary Fairness Diagnosis",
+                compareDesc: "No file reading required: the system cross-checks 8 built-in official annual reports.",
+                labels: ["Year", "Highest Education Level", "Age Group", "Industry", "Monthly Salary (TWD)"],
+                salaryPlaceholder: "Example: 55000",
+                male: "Male",
+                female: "Female",
+                calculate: "Generate Fairness Diagnosis Report",
+                resultDefault: "Diagnosing",
+                solutionTitle: "Improvement Plans and Action Suggestions",
+                footerSource: "Data sources: Ministry of Labor and DGBAS salary statistics tables, ROC Years 110-113.",
+                footerCopy: "© 2024 EQUALPAY PROJECT. SDG 10 Action for Reducing Inequality.",
+                lineDataset: "National gender pay gap (%)",
+                barDataset: "2024 national median salary (10k TWD)",
+                alertMissing: "Please enter your salary and select gender.",
+                resultBelowTitle: "Below the Fairness Benchmark",
+                resultFairTitle: "Meets the Market Fairness Benchmark",
+                resultBelowText: "Your salary is significantly below the market benchmark. From the perspective of SDG 10, this reflects unequal resource distribution. Please refer to the suggestions below.",
+                resultFairText: "Your salary is within a reasonable range. This indicates better workplace fairness in your current environment. Please continue your professional development.",
+                resultTemplate: (year, edu, industry, amount) => `Based on official data for ${year}, employees with “${edu}” education in “${industry}” have an estimated fair monthly salary benchmark of about <strong>NT$${amount}</strong>.`,
+                yearLabels: ['Year 110', 'Year 111', 'Year 112', 'Year 113'],
+                ageChartLabels: ['Under 25', '25-29', '30-39', '40-49', '50-64']
+            }
+        };
+
+        const OPTION_I18N = {
+            "113年": "Year 113",
+            "112年": "Year 112",
+            "111年": "Year 111",
+            "110年": "Year 110",
+            "研究所": "Graduate School",
+            "專科及大學": "College / University",
+            "高中": "Senior High School",
+            "國中及以下": "Junior High or Below",
+            "未滿25歲": "Under 25",
+            "25-29歲": "25-29",
+            "30-39歲": "30-39",
+            "40-49歲": "40-49",
+            "50-64歲": "50-64",
+            "全體": "All Industries",
+            "工業": "Industry",
+            "製造業": "Manufacturing",
+            "電力及燃氣供應業": "Electricity and Gas Supply",
+            "用水供應及污染整治業": "Water Supply and Remediation",
+            "營建工程業": "Construction",
+            "服務業": "Services",
+            "批發及零售業": "Wholesale and Retail",
+            "運輸及倉儲業": "Transportation and Storage",
+            "住宿及餐飲業": "Accommodation and Food Services",
+            "出版影音及資通訊業": "Publishing, Media and ICT",
+            "金融及保險業": "Finance and Insurance",
+            "不動產業": "Real Estate",
+            "專業科學及技術服務業": "Professional, Scientific and Technical Services",
+            "支援服務業": "Support Services",
+            "教育業": "Education",
+            "醫療保健及社會工作服務業": "Healthcare and Social Work",
+            "藝術娛樂及休閒服務業": "Arts, Entertainment and Recreation",
+            "其他服務業": "Other Services"
+        };
+
+        function displayLabel(value) {
+            return currentLang === 'en' ? (OPTION_I18N[value] || value) : value;
+        }
+
+        function initOptionValues() {
+            document.querySelectorAll('select option').forEach(option => {
+                if (!option.dataset.originalText) {
+                    option.dataset.originalText = option.textContent.trim();
+                    option.value = option.dataset.originalText;
+                }
+            });
+        }
+
+        function setText(selector, text) {
+            const el = document.querySelector(selector);
+            if (el) el.textContent = text;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = I18N[lang];
+
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-TW';
+            document.title = t.pageTitle;
+
+            setText('nav a[href="#stats"]', t.navStats);
+            setText('nav a[href="#compare"]', t.navCompare);
+
+            const dataStatus = document.getElementById('dataStatus');
+            if (dataStatus) {
+                dataStatus.innerHTML = `<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>${t.status}`;
+            }
+
+            const langZh = document.getElementById('lang-zh');
+            const langEn = document.getElementById('lang-en');
+            if (langZh && langEn) {
+                langZh.className = lang === 'zh'
+                    ? "px-3 py-1 rounded-full bg-indigo-600 text-white transition"
+                    : "px-3 py-1 rounded-full text-slate-600 hover:text-indigo-600 transition";
+                langEn.className = lang === 'en'
+                    ? "px-3 py-1 rounded-full bg-indigo-600 text-white transition"
+                    : "px-3 py-1 rounded-full text-slate-600 hover:text-indigo-600 transition";
+            }
+
+            const heroBadge = document.querySelector('header .max-w-5xl > span');
+            if (heroBadge) heroBadge.textContent = t.badge;
+            const heroTitle = document.querySelector('header h1');
+            if (heroTitle) heroTitle.innerHTML = t.heroTitle;
+            setText('header p', t.heroDesc);
+
+            const statTitles = document.querySelectorAll('#stats h3');
+            if (statTitles[0]) statTitles[0].innerHTML = `<span class="w-2 h-6 bg-indigo-600 rounded-full"></span>${t.trendTitle}`;
+            if (statTitles[1]) statTitles[1].innerHTML = `<span class="w-2 h-6 bg-pink-600 rounded-full"></span>${t.ageTitle}`;
+            const statNotes = document.querySelectorAll('#stats p');
+            if (statNotes[0]) statNotes[0].textContent = t.trendNote;
+            if (statNotes[1]) statNotes[1].textContent = t.ageNote;
+
+            setText('#compare h2', t.compareTitle);
+            setText('#compare .text-center p', t.compareDesc);
+
+            const labels = document.querySelectorAll('#compare label');
+            labels.forEach((label, index) => {
+                if (t.labels[index]) label.textContent = t.labels[index];
+            });
+
+            const salaryInput = document.getElementById('userSalary');
+            if (salaryInput) salaryInput.placeholder = t.salaryPlaceholder;
+
+            setText('#btn-male', t.male);
+            setText('#btn-female', t.female);
+            setText('button[onclick="calculateParity()"]', t.calculate);
+
+            const resultTitle = document.getElementById('resultTitle');
+            if (resultTitle && resultTitle.textContent === I18N.zh.resultDefault || resultTitle && resultTitle.textContent === I18N.en.resultDefault) {
+                resultTitle.textContent = t.resultDefault;
+            }
+
+            const solutionHeading = document.querySelector('#solutionSection h5');
+            if (solutionHeading) {
+                solutionHeading.innerHTML = `<span class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-sm">💡</span>${t.solutionTitle}`;
+            }
+
+            const footerPs = document.querySelectorAll('footer p');
+            if (footerPs[0]) footerPs[0].textContent = t.footerSource;
+            if (footerPs[1]) footerPs[1].textContent = t.footerCopy;
+
+            initOptionValues();
+            document.querySelectorAll('select option').forEach(option => {
+                const original = option.dataset.originalText;
+                option.textContent = lang === 'en' ? (OPTION_I18N[original] || original) : original;
+                option.value = original;
+            });
+
+            if (window.historyTrendChart) {
+                window.historyTrendChart.data.labels = t.yearLabels;
+                window.historyTrendChart.data.datasets[0].label = t.lineDataset;
+                window.historyTrendChart.update();
+            }
+
+            if (window.ageChart) {
+                window.ageChart.data.labels = t.ageChartLabels;
+                window.ageChart.data.datasets[0].label = t.barDataset;
+                window.ageChart.update();
+            }
+        }
+
         // 核心資料庫：已完整整合您提供的 8 個 CSV 檔案數據
         const HISTORICAL_DATA = {
             "113年": { genderGap: 12.5, ageGroups: { "未滿25歲": 38.1, "25-29歲": 52.1, "30-39歲": 58.1, "40-49歲": 62.0, "50-64歲": 57.9 }, 
@@ -221,17 +439,19 @@
         };
 
         window.onload = function() {
-            new Chart(document.getElementById('historyTrendChart').getContext('2d'), { 
+            window.historyTrendChart = new Chart(document.getElementById('historyTrendChart').getContext('2d'), { 
                 type: 'line', 
                 data: { labels: ['110年', '111年', '112年', '113年'], datasets: [{ label: '全國性別薪資落差 (%)', data: [14.1, 13.2, 12.3, 12.5], borderColor: '#4f46e5', borderWidth: 5, fill: true, backgroundColor: 'rgba(79, 70, 229, 0.05)', tension: 0.3, pointRadius: 8, pointBackgroundColor: '#fff' }] }, 
                 options: { maintainAspectRatio: false, scales: { y: { suggestedMin: 11, ticks: { callback: v => v + '%' } } } } 
             });
             
-            new Chart(document.getElementById('ageChart').getContext('2d'), { 
+            window.ageChart = new Chart(document.getElementById('ageChart').getContext('2d'), { 
                 type: 'bar', 
                 data: { labels: ['未滿25', '25-29', '30-39', '40-49', '50-64'], datasets: [{ label: '113年全國中位數 (萬)', data: [38.1, 52.1, 58.1, 62.0, 57.9], backgroundColor: '#6366f1', borderRadius: 12 }] }, 
                 options: { maintainAspectRatio: false } 
             });
+
+            setLanguage(currentLang);
         };
 
         let selectedGender = '';
@@ -248,7 +468,7 @@
             const industry = document.getElementById('userIndustry').value;
             const salaryVal = document.getElementById('userSalary').value;
             
-            if (!salaryVal || !selectedGender) { alert("請填寫薪資並選擇性別"); return; }
+            if (!salaryVal || !selectedGender) { alert(I18N[currentLang].alertMissing); return; }
             const salary = parseFloat(salaryVal);
 
             const resultBox = document.getElementById('resultBox');
@@ -267,21 +487,21 @@
 
             resultBox.classList.remove('hidden');
             document.getElementById('resultScore').innerText = score + "%";
-            document.getElementById('resTag').innerText = `${year} | ${industry}`;
+            document.getElementById('resTag').innerText = `${displayLabel(year)} | ${displayLabel(industry)}`;
             
-            let html = `<p>在 ${year} 官方數據中，具備「${edu}」學歷且位於「${industry}」的受僱者，公平基準月薪約為 <strong>${Math.round(finalBM).toLocaleString()}</strong> 元。</p>`;
+            let html = `<p>${I18N[currentLang].resultTemplate(displayLabel(year), displayLabel(edu), displayLabel(industry), Math.round(finalBM).toLocaleString())}</p>`;
             
             const solutionSection = document.getElementById('solutionSection');
             if (ratio < 85) {
-                document.getElementById('resultTitle').innerText = "低於公平基準線";
+                document.getElementById('resultTitle').innerText = I18N[currentLang].resultBelowTitle;
                 document.getElementById('resultTitle').className = "text-3xl font-black mb-4 text-red-600";
-                html += `<p class="mt-4">您的報酬顯著低於市場平均水平。在 SDG 10 的視角下，這反映了資源分配的不平等，建議參考下方解決方案。</p>`;
+                html += `<p class="mt-4">${I18N[currentLang].resultBelowText}</p>`;
                 solutionSection.classList.remove('hidden');
                 generateSolutions(selectedGender, edu);
             } else {
-                document.getElementById('resultTitle').innerText = "符合市場公平基準";
+                document.getElementById('resultTitle').innerText = I18N[currentLang].resultFairTitle;
                 document.getElementById('resultTitle').className = "text-3xl font-black mb-4 text-indigo-900";
-                html += `<p class="mt-4">您的薪資處於合理區間。這顯示您所在的職場具有較佳的公平性，請繼續維持專業發展。</p>`;
+                html += `<p class="mt-4">${I18N[currentLang].resultFairText}</p>`;
                 solutionSection.classList.add('hidden');
             }
 
@@ -312,4 +532,6 @@ function generateSolutions(gender, edu) {
     </script>
 </body>
 </html>
+
+
 
