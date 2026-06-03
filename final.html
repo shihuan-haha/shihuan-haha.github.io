@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -31,6 +32,8 @@
             <div class="hidden md:flex gap-8 items-center">
                 <a href="#stats" class="text-slate-500 hover:text-indigo-600 font-bold transition">趨勢分析</a>
                 <a href="#compare" class="text-slate-500 hover:text-indigo-600 font-bold transition">薪資診斷</a>
+                <a href="#discussion" class="text-slate-500 hover:text-indigo-600 font-bold transition">匿名討論</a>
+                <a href="#game" class="text-slate-500 hover:text-indigo-600 font-bold transition">知識小挑戰</a>
                 <div class="flex items-center gap-2 bg-slate-100 rounded-full p-1 text-xs font-bold">
                     <button onclick="setLanguage('zh')" id="lang-zh" class="px-3 py-1 rounded-full bg-indigo-600 text-white transition">中文</button>
                     <button onclick="setLanguage('en')" id="lang-en" class="px-3 py-1 rounded-full text-slate-600 hover:text-indigo-600 transition">EN</button>
@@ -173,6 +176,21 @@
                             </div>
                         </div>
 
+                        <!-- 規則式 診斷建議區塊 -->
+                        <div id="smartAdviceSection" class="border-t border-slate-100 pt-10 mb-10">
+                            <h5 class="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-900" id="smartAdviceTitle">
+                                <span class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm">🤖</span>
+                                診斷建議
+                            </h5>
+                            <p class="text-sm text-slate-500 mb-5 leading-relaxed" id="smartAdviceDesc">
+                                本系統會依據您的診斷結果，自動產生個人化薪資糾紛解決三步驟。
+                            </p>
+                            <button onclick="generateSmartAdvice()" id="smartAdviceBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
+                                產生診斷建議
+                            </button>
+                            <div id="smartAdviceOutput" class="hidden mt-6 bg-slate-50 border border-slate-100 rounded-2xl p-6 text-slate-700 leading-relaxed"></div>
+                        </div>
+
                         <!-- 解決方案區塊 -->
                         <div id="solutionSection" class="hidden border-t border-slate-100 pt-10">
                             <h5 class="text-xl font-bold mb-6 flex items-center gap-2 text-indigo-900">
@@ -181,6 +199,130 @@
                             </h5>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="solutionGrid"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 匿名討論區 -->
+        <section id="discussion" class="mt-16">
+            <div class="bg-white rounded-[3rem] p-10 md:p-16 card-shadow border border-slate-100">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-10">
+                        <span id="discussionEyebrow" class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-black mb-4">匿名交流空間</span>
+                        <h2 id="discussionTitle" class="text-4xl font-black mb-4 tracking-tight text-slate-900">匿名討論區</h2>
+                        <p id="discussionDesc" class="text-slate-500 text-lg leading-relaxed">
+                            以匿名方式分享薪資、福利、談薪與職場公平經驗。請勿留下姓名、電話、Email、員工編號或其他可識別個人的資訊。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8">
+                        <div class="bg-slate-50 rounded-[2rem] p-8 border border-slate-100">
+                            <h3 id="discussionFormTitle" class="text-2xl font-black text-slate-900 mb-6">發起匿名討論</h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                                <div class="space-y-2">
+                                    <label id="discussionNicknameLabel" class="text-sm font-bold text-slate-600">匿名暱稱</label>
+                                    <input type="text" id="discussionNickname" maxlength="20" placeholder="例：匿名上班族" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                </div>
+                                <div class="space-y-2">
+                                    <label id="discussionCategoryLabel" class="text-sm font-bold text-slate-600">討論分類</label>
+                                    <select id="discussionCategory" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                        <option>薪資疑問</option>
+                                        <option>福利經驗</option>
+                                        <option>談薪經驗</option>
+                                        <option>勞權諮詢</option>
+                                        <option>求職分享</option>
+                                        <option>其他</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 mb-5">
+                                <label id="discussionPostTitleLabel" class="text-sm font-bold text-slate-600">討論標題</label>
+                                <input type="text" id="discussionPostTitle" maxlength="60" placeholder="例：薪資低於基準時該怎麼談？" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                            </div>
+
+                            <div class="space-y-2 mb-5">
+                                <label id="discussionContentLabel" class="text-sm font-bold text-slate-600">討論內容</label>
+                                <textarea id="discussionContent" rows="7" maxlength="600" placeholder="請描述你的情況、想詢問的問題或經驗分享。避免填寫可識別個人的資訊。" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none"></textarea>
+                            </div>
+
+                            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-sm text-amber-700 mb-5" id="discussionPrivacyNotice">
+                                發文前請再次確認：不要填寫姓名、Email、電話、員工編號、精確部門或任何可能識別個人的內容。
+                            </div>
+
+                            <label class="flex items-start gap-3 text-sm text-slate-600 mb-6">
+                                <input type="checkbox" id="discussionPrivacyCheck" class="mt-1 accent-indigo-600">
+                                <span id="discussionPrivacyCheckText">我確認內容不包含可識別個人的資訊。</span>
+                            </label>
+
+                            <button onclick="submitAnonymousDiscussion()" id="discussionSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
+                                匿名發表
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-900 rounded-[2rem] p-8 text-white">
+                            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                                <div>
+                                    <h3 id="discussionBoardTitle" class="text-2xl font-black mb-3">匿名討論串</h3>
+                                    <p id="discussionBoardDesc" class="text-slate-400 leading-relaxed">所有內容只會儲存在此瀏覽器，適合作為前端 Demo。</p>
+                                </div>
+                                <div class="bg-white/10 border border-white/10 rounded-2xl px-5 py-4 shrink-0">
+                                    <p id="discussionCountLabel" class="text-slate-400 text-xs font-bold mb-1">討論數</p>
+                                    <p id="discussionCount" class="text-3xl font-black">0</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <p id="discussionFilterLabel" class="text-slate-400 text-sm font-bold mb-3">選擇想看的討論區</p>
+                                <div id="discussionFilterBar" class="flex flex-wrap gap-2"></div>
+                            </div>
+
+                            <div id="discussionList" class="space-y-4 max-h-[520px] overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 薪資公平小遊戲 -->
+        <section id="game" class="mt-16">
+            <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
+                <div class="max-w-5xl mx-auto relative z-10">
+                    <div class="text-center mb-10">
+                        <span id="gameEyebrow" class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-sm font-black mb-4">知識小挑戰</span>
+                        <h2 id="gameTitle" class="text-4xl font-black mb-4 tracking-tight">知識小挑戰</h2>
+                        <p id="gameDesc" class="text-indigo-50 text-lg leading-relaxed max-w-3xl mx-auto">
+                            透過情境選擇題，測試你是否了解薪資透明、同工同酬與職場公平。
+                        </p>
+                    </div>
+
+                    <div class="bg-white text-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-2xl">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                            <div>
+                                <p id="gameProgress" class="text-sm font-black text-indigo-600 uppercase tracking-widest">Question 1 / 5</p>
+                                <h3 id="gameQuestion" class="text-2xl md:text-3xl font-black mt-2 leading-snug">題目載入中</h3>
+                            </div>
+                            <div class="bg-indigo-50 text-indigo-700 px-5 py-3 rounded-2xl font-black">
+                                <span id="gameScoreLabel">分數</span>：<span id="gameScore">0</span>
+                            </div>
+                        </div>
+
+                        <div id="gameOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+
+                        <div id="gameFeedback" class="hidden rounded-2xl p-5 mb-6 text-sm leading-relaxed"></div>
+
+                        <div class="flex flex-col md:flex-row gap-4 justify-between">
+                            <button onclick="restartFairnessGame()" id="gameRestartBtn" class="px-8 py-4 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-black transition">
+                                重新開始
+                            </button>
+                            <button onclick="nextFairnessQuestion()" id="gameNextBtn" class="px-8 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                下一題
+                            </button>
+                        </div>
+
+                        <div id="gameResult" class="hidden mt-8 border-t border-slate-100 pt-8"></div>
                     </div>
                 </div>
             </div>
@@ -201,6 +343,8 @@
                 pageTitle: "EqualPay - 內建大數據薪資儀表板 (SDG 10)",
                 navStats: "趨勢分析",
                 navCompare: "薪資診斷",
+                navReport: "匿名討論",
+                navGame: "知識小挑戰",
                 status: "已自動載入 110-113 年官方完整數據",
                 badge: "SDG 10：減少職場不平等",
                 heroTitle: "數據驅動，<br>零門檻看見公平",
@@ -217,7 +361,121 @@
                 female: "女性",
                 calculate: "產出公平性診斷報告",
                 resultDefault: "診斷中",
-                solutionTitle: "改善方案與行動建議",
+                smartAdviceTitle: "診斷建議",
+                smartAdviceDesc: "本系統會依據您的診斷結果，自動產生個人化改善方案與行動建議。",
+                smartAdviceButton: "產生診斷建議",
+                smartAdviceNeedDiagnosis: "請先完成薪資公平性診斷，再產生診斷建議。",
+                solutionTitle: "薪資糾紛解決三步驟",
+                discussionEyebrow: "匿名交流空間",
+                discussionTitle: "匿名討論區",
+                discussionDesc: "以匿名方式分享薪資、福利、談薪與職場公平經驗。請勿留下姓名、電話、Email、員工編號或其他可識別個人的資訊。",
+                discussionFormTitle: "發起匿名討論",
+                discussionNicknameLabel: "匿名暱稱",
+                discussionNicknamePlaceholder: "例：匿名上班族",
+                discussionCategoryLabel: "討論分類",
+                discussionPostTitleLabel: "討論標題",
+                discussionPostTitlePlaceholder: "例：薪資低於基準時該怎麼談？",
+                discussionContentLabel: "討論內容",
+                discussionContentPlaceholder: "請描述你的情況、想詢問的問題或經驗分享。避免填寫可識別個人的資訊。",
+                discussionPrivacyNotice: "發文前請再次確認：不要填寫姓名、Email、電話、員工編號、精確部門或任何可能識別個人的內容。",
+                discussionPrivacyCheckText: "我確認內容不包含可識別個人的資訊。",
+                discussionSubmit: "匿名發表",
+                discussionBoardTitle: "匿名討論串",
+                discussionBoardDesc: "所有內容只會儲存在此瀏覽器，適合作為前端 Demo。",
+                discussionCountLabel: "顯示筆數",
+                discussionFilterLabel: "選擇想看的討論區",
+                discussionFilterAll: "全部",
+                discussionFilteredEmpty: "此分類目前尚無討論，歡迎發起第一篇。",
+                discussionNeedTitle: "請輸入討論標題。",
+                discussionNeedContent: "請輸入討論內容。",
+                discussionNeedPrivacy: "請先確認內容不包含可識別個人的資訊。",
+                discussionSuccess: "匿名討論已發表。",
+                discussionEmpty: "目前尚無討論。成為第一個發起討論的人吧！",
+                discussionSupport: "我也遇過",
+                discussionAnonymous: "匿名使用者",
+                discussionCategories: {
+                    salary: "薪資疑問",
+                    benefits: "福利經驗",
+                    negotiation: "談薪經驗",
+                    rights: "勞權諮詢",
+                    job: "求職分享",
+                    other: "其他"
+                },
+                gameEyebrow: "知識小挑戰",
+                gameTitle: "知識小挑戰",
+                gameDesc: "透過情境選擇題，測試你是否了解薪資透明、同工同酬與職場公平。",
+                gameScoreLabel: "分數",
+                gameRestart: "重新開始",
+                gameNext: "下一題",
+                gameFinish: "查看結果",
+                gameProgress: (current, total) => `第 ${current} / ${total} 題`,
+                gameResultTitle: "挑戰完成",
+                gameResultScore: (score, total) => `你的分數：${score} / ${total}`,
+                gameResultHigh: "你很了解薪資公平觀念！可以把這些概念應用在薪資診斷、匿名回報與職涯規劃中。",
+                gameResultMid: "你已經掌握基本概念。建議再熟悉薪資透明、同工同酬與談薪準備方式。",
+                gameResultLow: "還有進步空間。建議先從了解公平基準、薪資資料蒐集與職場權益開始。",
+                gameQuestions: [
+                    {
+                        question: "如果兩位員工做相同工作、責任相近，薪資評估最應該依據什麼？",
+                        options: ["性別與年齡", "工作表現、職責與市場薪資", "誰比較敢談薪", "誰比較常加班但沒有紀錄"],
+                        answer: 1,
+                        explain: "薪資公平應以職責、能力、績效與市場基準為核心，而不是性別、年齡或個人是否敢開口。"
+                    },
+                    {
+                        question: "薪資透明制度最主要能幫助什麼？",
+                        options: ["讓大家薪水完全一樣", "降低資訊不對稱與不合理差距", "禁止員工討論薪資", "讓公司不用調薪"],
+                        answer: 1,
+                        explain: "薪資透明不是讓所有人薪水相同，而是讓薪資範圍與評估標準更清楚，降低不公平差距。"
+                    },
+                    {
+                        question: "發現薪資低於市場公平基準時，第一步最適合做什麼？",
+                        options: ["立刻離職", "整理工作成果與薪資佐證資料", "在網路上公布主管名字", "完全不處理"],
+                        answer: 1,
+                        explain: "先整理成果、職責與市場資料，能讓後續談薪或轉職判斷更有根據。"
+                    },
+                    {
+                        question: "匿名回報薪資資料時，哪一項不應該填寫？",
+                        options: ["產業別", "月薪區間或月薪", "姓名、電話或員工編號", "福利項目"],
+                        answer: 2,
+                        explain: "匿名回報應避免姓名、電話、Email、員工編號等可識別個人的資訊。"
+                    },
+                    {
+                        question: "薪資診斷中的「公平基準」最適合被用來做什麼？",
+                        options: ["作為了解市場薪資與談薪準備的參考", "保證公司一定會加薪", "取代所有個人能力與績效評估", "判定某家公司一定違法"],
+                        answer: 0,
+                        explain: "公平基準適合作為市場參考與談薪準備依據，但不能保證加薪，也不能單獨判定公司違法。"
+                    },
+                    {
+                        question: "在談薪前，哪一種資料最能支持自己的訴求？",
+                        options: ["朋友隨口說的薪水", "自己的工作成果、職責變化與市場薪資資料", "只說自己生活費變高", "完全不準備直接要求加薪"],
+                        answer: 1,
+                        explain: "談薪時應以具體成果、職責範圍與市場薪資資料作為依據，較能提升溝通可信度。"
+                    },
+                    {
+                        question: "如果公司福利很多，但薪資長期低於公平基準，最合理的判斷是什麼？",
+                        options: ["有福利就一定公平", "福利可納入考量，但仍應檢視總報酬是否合理", "福利越多薪資越低越好", "不用看薪資"],
+                        answer: 1,
+                        explain: "福利是總報酬的一部分，但不能完全取代合理薪資，仍應檢視薪資、福利與工作負荷是否平衡。"
+                    },
+                    {
+                        question: "同工同酬的概念主要強調什麼？",
+                        options: ["同一家公司所有人薪資都一樣", "相同價值與責任的工作應有合理且不歧視的報酬", "年資越久一定薪水越高", "職稱一樣就不能有任何差異"],
+                        answer: 1,
+                        explain: "同工同酬重視工作價值、責任與能力的公平評價，避免因性別或其他非工作因素造成不合理差距。"
+                    },
+                    {
+                        question: "匿名薪資平台為什麼需要累積足夠樣本數才顯示統計？",
+                        options: ["讓網站看起來比較慢", "保護匿名性並降低單一資料被辨識的風險", "讓資料不能使用", "避免任何人看到平均薪資"],
+                        answer: 1,
+                        explain: "樣本數太少時容易推測出個別回報者，因此累積足夠樣本後再顯示統計能提升匿名保護。"
+                    },
+                    {
+                        question: "若想改善職場薪資不平等，哪一個做法最有幫助？",
+                        options: ["完全不討論薪資", "建立清楚的職級、薪資範圍與升遷標準", "只靠員工自己猜", "禁止員工了解市場行情"],
+                        answer: 1,
+                        explain: "清楚的職級、薪資範圍與升遷標準能降低資訊不對稱，讓薪資制度更透明且可檢視。"
+                    }
+                ],
                 footerSource: "數據引用來源：勞動部與主計總處 110-113 年「各業受僱員工薪資統計表1 & 表2」",
                 footerCopy: "© 2024 EQUALPAY PROJECT. SDG 10 減少不平等行動實踐.",
                 lineDataset: "全國性別薪資落差 (%)",
@@ -235,6 +493,8 @@
                 pageTitle: "EqualPay - Built-in Salary Data Dashboard (SDG 10)",
                 navStats: "Trend Analysis",
                 navCompare: "Salary Diagnosis",
+                navReport: "Anonymous Discussion",
+                navGame: "Knowledge Challenge",
                 status: "Loaded official data from ROC Years 110-113",
                 badge: "SDG 10: Reducing Workplace Inequality",
                 heroTitle: "Data-driven insights,<br>fairness with zero barriers",
@@ -251,7 +511,121 @@
                 female: "Female",
                 calculate: "Generate Fairness Diagnosis Report",
                 resultDefault: "Diagnosing",
-                solutionTitle: "Improvement Plans and Action Suggestions",
+                smartAdviceTitle: "Diagnosis Suggestions",
+                smartAdviceDesc: "The system generates personalized improvement plans and action suggestions based on your diagnosis result.",
+                smartAdviceButton: "Generate Diagnosis Suggestions",
+                smartAdviceNeedDiagnosis: "Please complete the salary fairness diagnosis before generating diagnosis suggestions.",
+                solutionTitle: "Three Steps to Resolve Salary Disputes",
+                discussionEyebrow: "Anonymous Exchange Space",
+                discussionTitle: "Anonymous Discussion Board",
+                discussionDesc: "Share salary, benefits, negotiation, and workplace fairness experiences anonymously. Do not leave names, phone numbers, emails, employee IDs, or other personally identifiable information.",
+                discussionFormTitle: "Start an Anonymous Discussion",
+                discussionNicknameLabel: "Anonymous Nickname",
+                discussionNicknamePlaceholder: "Example: Anonymous Worker",
+                discussionCategoryLabel: "Discussion Category",
+                discussionPostTitleLabel: "Discussion Title",
+                discussionPostTitlePlaceholder: "Example: How should I negotiate when my salary is below the benchmark?",
+                discussionContentLabel: "Discussion Content",
+                discussionContentPlaceholder: "Describe your situation, question, or experience. Avoid entering personally identifiable information.",
+                discussionPrivacyNotice: "Before posting, confirm again: do not enter your name, email, phone number, employee ID, exact department, or anything that may identify a person.",
+                discussionPrivacyCheckText: "I confirm that the content does not include personally identifiable information.",
+                discussionSubmit: "Post Anonymously",
+                discussionBoardTitle: "Anonymous Threads",
+                discussionBoardDesc: "All content is stored only in this browser, suitable for a frontend demo.",
+                discussionCountLabel: "Visible Threads",
+                discussionFilterLabel: "Choose a discussion board",
+                discussionFilterAll: "All",
+                discussionFilteredEmpty: "No discussions in this category yet. Start the first one.",
+                discussionNeedTitle: "Please enter a discussion title.",
+                discussionNeedContent: "Please enter discussion content.",
+                discussionNeedPrivacy: "Please confirm that the content does not include personally identifiable information.",
+                discussionSuccess: "Anonymous discussion posted.",
+                discussionEmpty: "No discussions yet. Be the first to start one!",
+                discussionSupport: "I experienced this too",
+                discussionAnonymous: "Anonymous User",
+                discussionCategories: {
+                    salary: "Salary Question",
+                    benefits: "Benefits Experience",
+                    negotiation: "Negotiation Experience",
+                    rights: "Labor Rights Consultation",
+                    job: "Job Search Sharing",
+                    other: "Other"
+                },
+                gameEyebrow: "Knowledge Challenge",
+                gameTitle: "Knowledge Challenge",
+                gameDesc: "Answer scenario-based questions to test your understanding of pay transparency, equal pay, and workplace fairness.",
+                gameScoreLabel: "Score",
+                gameRestart: "Restart",
+                gameNext: "Next",
+                gameFinish: "View Result",
+                gameProgress: (current, total) => `Question ${current} / ${total}`,
+                gameResultTitle: "Challenge Complete",
+                gameResultScore: (score, total) => `Your score: ${score} / ${total}`,
+                gameResultHigh: "You understand salary fairness very well. You can apply these ideas to salary diagnosis, anonymous reporting, and career planning.",
+                gameResultMid: "You understand the basic concepts. Review pay transparency, equal pay, and negotiation preparation to improve further.",
+                gameResultLow: "There is still room to improve. Start by learning about fairness benchmarks, salary evidence, and workplace rights.",
+                gameQuestions: [
+                    {
+                        question: "If two employees do similar work with similar responsibilities, what should salary evaluation be based on?",
+                        options: ["Gender and age", "Performance, responsibilities, and market salary", "Who negotiates more aggressively", "Who works overtime without records"],
+                        answer: 1,
+                        explain: "Salary fairness should be based on responsibilities, skills, performance, and market benchmarks, not gender, age, or whether someone dares to negotiate."
+                    },
+                    {
+                        question: "What is the main purpose of pay transparency?",
+                        options: ["Make everyone’s salary exactly the same", "Reduce information gaps and unreasonable differences", "Stop employees from discussing salary", "Let companies avoid raises"],
+                        answer: 1,
+                        explain: "Pay transparency does not mean identical salaries. It makes salary ranges and evaluation standards clearer, reducing unfair gaps."
+                    },
+                    {
+                        question: "When your salary is below the fairness benchmark, what is the best first step?",
+                        options: ["Quit immediately", "Organize achievements and salary evidence", "Post your manager’s name online", "Do nothing"],
+                        answer: 1,
+                        explain: "Start by organizing achievements, responsibilities, and market salary evidence. This supports future negotiation or job decisions."
+                    },
+                    {
+                        question: "When submitting anonymous salary data, which item should not be entered?",
+                        options: ["Industry", "Monthly salary or salary range", "Name, phone number, or employee ID", "Benefits"],
+                        answer: 2,
+                        explain: "Anonymous reporting should avoid names, phone numbers, emails, employee IDs, or anything personally identifiable."
+                    },
+                    {
+                        question: "What is the best use of the “fairness benchmark” in salary diagnosis?",
+                        options: ["As a reference for understanding market salary and preparing negotiation", "To guarantee that a company must give a raise", "To replace all personal ability and performance evaluation", "To prove that a company is definitely breaking the law"],
+                        answer: 0,
+                        explain: "The fairness benchmark is useful as a market reference and negotiation preparation tool, but it does not guarantee a raise or independently prove illegal behavior."
+                    },
+                    {
+                        question: "Before negotiating salary, which evidence best supports your request?",
+                        options: ["A friend’s casual salary comment", "Your achievements, expanded responsibilities, and market salary data", "Only saying your living costs increased", "Asking for a raise without preparation"],
+                        answer: 1,
+                        explain: "Salary negotiation is stronger when supported by concrete achievements, role scope, and market salary evidence."
+                    },
+                    {
+                        question: "If a company offers many benefits but salary stays below the fairness benchmark, what is the most reasonable view?",
+                        options: ["Benefits always mean fairness", "Benefits matter, but total compensation should still be reviewed", "More benefits should always mean lower salary", "Salary does not matter"],
+                        answer: 1,
+                        explain: "Benefits are part of total compensation, but they should not fully replace fair salary. Salary, benefits, and workload should be evaluated together."
+                    },
+                    {
+                        question: "What does equal pay for equal work mainly emphasize?",
+                        options: ["Everyone in one company must earn the same salary", "Work with similar value and responsibility should receive fair and non-discriminatory pay", "Longer tenure must always mean higher pay", "The same job title can never have any difference"],
+                        answer: 1,
+                        explain: "Equal pay focuses on fair evaluation of work value, responsibility, and skills, avoiding unreasonable gaps caused by gender or other non-work factors."
+                    },
+                    {
+                        question: "Why should anonymous salary platforms wait for enough samples before showing detailed statistics?",
+                        options: ["To make the website look slower", "To protect anonymity and reduce the risk of identifying one report", "To make data unusable", "To prevent anyone from seeing average salary"],
+                        answer: 1,
+                        explain: "When sample size is too small, individual reports may be easier to infer. Showing statistics after enough samples improves anonymity protection."
+                    },
+                    {
+                        question: "Which practice best helps reduce workplace pay inequality?",
+                        options: ["Never discussing salary", "Clear job levels, salary ranges, and promotion standards", "Letting employees guess everything", "Preventing employees from knowing market rates"],
+                        answer: 1,
+                        explain: "Clear job levels, salary ranges, and promotion standards reduce information gaps and make pay systems more transparent and reviewable."
+                    }
+                ],
                 footerSource: "Data sources: Ministry of Labor and DGBAS salary statistics tables, ROC Years 110-113.",
                 footerCopy: "© 2024 EQUALPAY PROJECT. SDG 10 Action for Reducing Inequality.",
                 lineDataset: "National gender pay gap (%)",
@@ -299,7 +673,13 @@
             "教育業": "Education",
             "醫療保健及社會工作服務業": "Healthcare and Social Work",
             "藝術娛樂及休閒服務業": "Arts, Entertainment and Recreation",
-            "其他服務業": "Other Services"
+            "其他服務業": "Other Services",
+            "薪資疑問": "Salary Question",
+            "福利經驗": "Benefits Experience",
+            "談薪經驗": "Negotiation Experience",
+            "勞權諮詢": "Labor Rights Consultation",
+            "求職分享": "Job Search Sharing",
+            "其他": "Other"
         };
 
         function displayLabel(value) {
@@ -329,6 +709,8 @@
 
             setText('nav a[href="#stats"]', t.navStats);
             setText('nav a[href="#compare"]', t.navCompare);
+            setText('nav a[href="#discussion"]', t.navReport);
+            setText('nav a[href="#game"]', t.navGame);
 
             const dataStatus = document.getElementById('dataStatus');
             if (dataStatus) {
@@ -379,10 +761,50 @@
                 resultTitle.textContent = t.resultDefault;
             }
 
+            const smartTitle = document.getElementById('smartAdviceTitle');
+            if (smartTitle) {
+                smartTitle.innerHTML = `<span class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm">🤖</span>${t.smartAdviceTitle}`;
+            }
+            setText('#smartAdviceDesc', t.smartAdviceDesc);
+            setText('#smartAdviceBtn', t.smartAdviceButton);
+
             const solutionHeading = document.querySelector('#solutionSection h5');
             if (solutionHeading) {
                 solutionHeading.innerHTML = `<span class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-sm">💡</span>${t.solutionTitle}`;
             }
+
+            setText('#discussionEyebrow', t.discussionEyebrow);
+            setText('#discussionTitle', t.discussionTitle);
+            setText('#discussionDesc', t.discussionDesc);
+            setText('#discussionFormTitle', t.discussionFormTitle);
+            setText('#discussionNicknameLabel', t.discussionNicknameLabel);
+            setText('#discussionCategoryLabel', t.discussionCategoryLabel);
+            setText('#discussionPostTitleLabel', t.discussionPostTitleLabel);
+            setText('#discussionContentLabel', t.discussionContentLabel);
+            setText('#discussionPrivacyNotice', t.discussionPrivacyNotice);
+            setText('#discussionPrivacyCheckText', t.discussionPrivacyCheckText);
+            setText('#discussionSubmitBtn', t.discussionSubmit);
+            setText('#discussionBoardTitle', t.discussionBoardTitle);
+            setText('#discussionBoardDesc', t.discussionBoardDesc);
+            setText('#discussionCountLabel', t.discussionCountLabel);
+            setText('#discussionFilterLabel', t.discussionFilterLabel);
+
+            setText('#gameEyebrow', t.gameEyebrow);
+            setText('#gameTitle', t.gameTitle);
+            setText('#gameDesc', t.gameDesc);
+            setText('#gameScoreLabel', t.gameScoreLabel);
+            setText('#gameRestartBtn', t.gameRestart);
+            updateFairnessGameText();
+
+            const discussionNickname = document.getElementById('discussionNickname');
+            if (discussionNickname) discussionNickname.placeholder = t.discussionNicknamePlaceholder;
+            const discussionPostTitle = document.getElementById('discussionPostTitle');
+            if (discussionPostTitle) discussionPostTitle.placeholder = t.discussionPostTitlePlaceholder;
+            const discussionContent = document.getElementById('discussionContent');
+            if (discussionContent) discussionContent.placeholder = t.discussionContentPlaceholder;
+
+            renderDiscussionFilters();
+            renderAnonymousDiscussions();
 
             const footerPs = document.querySelectorAll('footer p');
             if (footerPs[0]) footerPs[0].textContent = t.footerSource;
@@ -455,6 +877,7 @@
         };
 
         let selectedGender = '';
+        let lastDiagnosis = null;
         function setGender(gender) {
             selectedGender = gender;
             document.getElementById('btn-male').className = gender === 'male' ? "px-10 py-4 rounded-2xl bg-indigo-600 text-white font-bold transition shadow-lg" : "px-10 py-4 rounded-2xl border border-white/20 bg-white/5 text-white font-bold transition";
@@ -484,6 +907,27 @@
             const finalBM = (eduBM * 0.4) + (ageBM * 0.3) + (genderBM * 0.3);
             const ratio = (salary / finalBM) * 100;
             const score = Math.min(Math.round(ratio), 100);
+            const gapAmount = Math.round(finalBM - salary);
+
+            lastDiagnosis = {
+                year,
+                education: edu,
+                age,
+                industry,
+                salary,
+                selectedGender,
+                fairBenchmark: Math.round(finalBM),
+                ratio: Math.round(ratio),
+                score,
+                gapAmount,
+                resultStatus: ratio < 85 ? "below" : "fair"
+            };
+
+            const smartAdviceOutput = document.getElementById('smartAdviceOutput');
+            if (smartAdviceOutput) {
+                smartAdviceOutput.classList.add('hidden');
+                smartAdviceOutput.innerHTML = '';
+            }
 
             resultBox.classList.remove('hidden');
             document.getElementById('resultScore').innerText = score + "%";
@@ -510,20 +954,608 @@
             document.getElementById('scoreCircle').style.strokeDashoffset = circ - (score / 100) * circ;
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+
+
+
+        const FAIRNESS_GAME_ROUND_SIZE = 5;
+        let fairnessGameIndex = 0;
+        let fairnessGameScore = 0;
+        let fairnessGameAnswered = false;
+        let fairnessQuestionOrder = [];
+
+        function createFairnessQuestionOrder() {
+            const totalQuestions = I18N.zh.gameQuestions.length;
+            const indexes = Array.from({ length: totalQuestions }, (_, index) => index);
+
+            for (let i = indexes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
+            }
+
+            fairnessQuestionOrder = indexes.slice(0, Math.min(FAIRNESS_GAME_ROUND_SIZE, totalQuestions));
+        }
+
+        function getCurrentFairnessQuestion() {
+            if (fairnessQuestionOrder.length === 0) {
+                createFairnessQuestionOrder();
+            }
+
+            const questionIndex = fairnessQuestionOrder[fairnessGameIndex];
+            return I18N[currentLang].gameQuestions[questionIndex];
+        }
+
+        function updateFairnessGameText() {
+            const gameBox = document.getElementById('gameQuestion');
+            if (!gameBox) return;
+
+            if (fairnessQuestionOrder.length === 0) {
+                createFairnessQuestionOrder();
+            }
+
+            const total = fairnessQuestionOrder.length;
+            if (fairnessGameIndex >= total) {
+                showFairnessGameResult();
+                return;
+            }
+
+            const q = getCurrentFairnessQuestion();
+            document.getElementById('gameProgress').textContent = I18N[currentLang].gameProgress(fairnessGameIndex + 1, total);
+            document.getElementById('gameQuestion').textContent = q.question;
+            document.getElementById('gameScore').textContent = fairnessGameScore;
+            document.getElementById('gameNextBtn').textContent = fairnessGameIndex === total - 1 ? I18N[currentLang].gameFinish : I18N[currentLang].gameNext;
+
+            const optionsBox = document.getElementById('gameOptions');
+            optionsBox.innerHTML = q.options.map((option, index) => `
+                <button onclick="answerFairnessQuestion(${index})" class="game-option text-left border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 rounded-2xl p-5 font-bold transition">
+                    ${String.fromCharCode(65 + index)}. ${option}
+                </button>
+            `).join('');
+
+            const feedback = document.getElementById('gameFeedback');
+            feedback.classList.add('hidden');
+            feedback.textContent = '';
+
+            const result = document.getElementById('gameResult');
+            result.classList.add('hidden');
+            result.innerHTML = '';
+
+            fairnessGameAnswered = false;
+            document.getElementById('gameNextBtn').disabled = true;
+        }
+
+        function answerFairnessQuestion(selectedIndex) {
+            if (fairnessGameAnswered) return;
+
+            const q = getCurrentFairnessQuestion();
+            const isCorrect = selectedIndex === q.answer;
+            const feedback = document.getElementById('gameFeedback');
+            const optionButtons = document.querySelectorAll('.game-option');
+
+            fairnessGameAnswered = true;
+            if (isCorrect) fairnessGameScore += 1;
+
+            optionButtons.forEach((button, index) => {
+                button.disabled = true;
+                button.classList.remove('hover:border-indigo-400', 'hover:bg-indigo-50');
+
+                if (index === q.answer) {
+                    button.classList.add('border-green-400', 'bg-green-50', 'text-green-700');
+                } else if (index === selectedIndex) {
+                    button.classList.add('border-red-300', 'bg-red-50', 'text-red-600');
+                } else {
+                    button.classList.add('opacity-60');
+                }
+            });
+
+            feedback.classList.remove('hidden');
+            feedback.className = isCorrect
+                ? "rounded-2xl p-5 mb-6 text-sm leading-relaxed bg-green-50 text-green-700 border border-green-100"
+                : "rounded-2xl p-5 mb-6 text-sm leading-relaxed bg-red-50 text-red-700 border border-red-100";
+            feedback.textContent = `${isCorrect ? "✅" : "💡"} ${q.explain}`;
+
+            document.getElementById('gameScore').textContent = fairnessGameScore;
+            document.getElementById('gameNextBtn').disabled = false;
+        }
+
+        function nextFairnessQuestion() {
+            if (!fairnessGameAnswered) return;
+
+            fairnessGameIndex += 1;
+
+            if (fairnessGameIndex >= fairnessQuestionOrder.length) {
+                showFairnessGameResult();
+            } else {
+                updateFairnessGameText();
+            }
+        }
+
+        function showFairnessGameResult() {
+            const t = I18N[currentLang];
+            const total = fairnessQuestionOrder.length || FAIRNESS_GAME_ROUND_SIZE;
+            const result = document.getElementById('gameResult');
+            const feedback = document.getElementById('gameFeedback');
+
+            let message = t.gameResultLow;
+            if (fairnessGameScore >= 4) message = t.gameResultHigh;
+            else if (fairnessGameScore >= 2) message = t.gameResultMid;
+
+            document.getElementById('gameProgress').textContent = t.gameResultTitle;
+            document.getElementById('gameQuestion').textContent = t.gameResultScore(fairnessGameScore, total);
+            document.getElementById('gameOptions').innerHTML = '';
+            document.getElementById('gameNextBtn').disabled = true;
+            document.getElementById('gameNextBtn').textContent = t.gameNext;
+            feedback.classList.add('hidden');
+
+            result.classList.remove('hidden');
+            result.innerHTML = `
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6">
+                    <h4 class="text-2xl font-black text-indigo-900 mb-3">${t.gameResultTitle}</h4>
+                    <p class="text-slate-700 leading-relaxed">${message}</p>
+                </div>
+            `;
+        }
+
+        function restartFairnessGame() {
+            fairnessGameIndex = 0;
+            fairnessGameScore = 0;
+            fairnessGameAnswered = false;
+            createFairnessQuestionOrder();
+            updateFairnessGameText();
+        }
+
+
+        const DISCUSSION_STORAGE_KEY = "equalpayAnonymousDiscussions";
+        const DISCUSSION_LIKED_STORAGE_KEY = "equalpayLikedDiscussions";
+        let activeDiscussionFilter = "all";
+        const DISCUSSION_FILTER_ORDER = ["all", "salary", "benefits", "negotiation", "rights", "job", "other"];
+
+        function getAnonymousDiscussions() {
+            try {
+                return JSON.parse(localStorage.getItem(DISCUSSION_STORAGE_KEY)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveAnonymousDiscussions(discussions) {
+            localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify(discussions));
+        }
+
+        function getLikedDiscussionIds() {
+            try {
+                return JSON.parse(localStorage.getItem(DISCUSSION_LIKED_STORAGE_KEY)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveLikedDiscussionIds(ids) {
+            localStorage.setItem(DISCUSSION_LIKED_STORAGE_KEY, JSON.stringify(ids));
+        }
+
+        function isDiscussionLiked(id) {
+            return getLikedDiscussionIds().includes(id);
+        }
+
+        function getDiscussionCategoryKey(categoryText) {
+            const map = {
+                "薪資疑問": "salary",
+                "福利經驗": "benefits",
+                "談薪經驗": "negotiation",
+                "勞權諮詢": "rights",
+                "求職分享": "job",
+                "其他": "other"
+            };
+            return map[categoryText] || "other";
+        }
+
+        function getDiscussionCategoryLabel(categoryKey) {
+            return I18N[currentLang].discussionCategories[categoryKey] || I18N[currentLang].discussionCategories.other;
+        }
+
+        function getDiscussionFilterLabel(filterKey) {
+            return filterKey === "all" ? I18N[currentLang].discussionFilterAll : getDiscussionCategoryLabel(filterKey);
+        }
+
+        function renderDiscussionFilters() {
+            const bar = document.getElementById('discussionFilterBar');
+            if (!bar) return;
+
+            bar.innerHTML = DISCUSSION_FILTER_ORDER.map(filterKey => {
+                const activeClass = filterKey === activeDiscussionFilter
+                    ? "bg-indigo-500 text-white border-indigo-400"
+                    : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white";
+
+                return `
+                    <button onclick="setDiscussionFilter('${filterKey}')" class="px-4 py-2 rounded-full border text-sm font-black transition ${activeClass}">
+                        ${getDiscussionFilterLabel(filterKey)}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function setDiscussionFilter(filterKey) {
+            activeDiscussionFilter = filterKey;
+            renderDiscussionFilters();
+            renderAnonymousDiscussions();
+        }
+
+        function submitAnonymousDiscussion() {
+            const t = I18N[currentLang];
+            const nickname = document.getElementById('discussionNickname').value.trim().slice(0, 20) || t.discussionAnonymous;
+            const categoryText = document.getElementById('discussionCategory').value;
+            const category = getDiscussionCategoryKey(categoryText);
+            const title = document.getElementById('discussionPostTitle').value.trim().slice(0, 60);
+            const content = document.getElementById('discussionContent').value.trim().slice(0, 600);
+            const privacyChecked = document.getElementById('discussionPrivacyCheck').checked;
+
+            if (!title) {
+                alert(t.discussionNeedTitle);
+                return;
+            }
+
+            if (!content) {
+                alert(t.discussionNeedContent);
+                return;
+            }
+
+            if (!privacyChecked) {
+                alert(t.discussionNeedPrivacy);
+                return;
+            }
+
+            const discussions = getAnonymousDiscussions();
+            discussions.unshift({
+                id: Date.now().toString(),
+                nickname,
+                category,
+                title,
+                content,
+                supportCount: 0,
+                createdAt: new Date().toISOString()
+            });
+
+            saveAnonymousDiscussions(discussions);
+
+            document.getElementById('discussionNickname').value = "";
+            document.getElementById('discussionPostTitle').value = "";
+            document.getElementById('discussionContent').value = "";
+            document.getElementById('discussionPrivacyCheck').checked = false;
+
+            renderAnonymousDiscussions();
+            alert(t.discussionSuccess);
+        }
+
+        function supportAnonymousDiscussion(id) {
+            const discussions = getAnonymousDiscussions();
+            const likedIds = getLikedDiscussionIds();
+            const target = discussions.find(item => item.id === id);
+            if (!target) return;
+
+            const likedIndex = likedIds.indexOf(id);
+
+            if (likedIndex >= 0) {
+                likedIds.splice(likedIndex, 1);
+                target.supportCount = Math.max(Number(target.supportCount || 0) - 1, 0);
+            } else {
+                likedIds.push(id);
+                target.supportCount = Number(target.supportCount || 0) + 1;
+            }
+
+            saveAnonymousDiscussions(discussions);
+            saveLikedDiscussionIds(likedIds);
+            renderAnonymousDiscussions();
+        }
+
+        function formatDiscussionTime(isoString) {
+            const date = new Date(isoString);
+            if (Number.isNaN(date.getTime())) return "";
+            return date.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+        }
+
+        function escapeHTML(value) {
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function renderAnonymousDiscussions() {
+            const list = document.getElementById('discussionList');
+            const count = document.getElementById('discussionCount');
+            if (!list || !count) return;
+
+            const t = I18N[currentLang];
+            const discussions = getAnonymousDiscussions();
+            const visibleDiscussions = activeDiscussionFilter === "all"
+                ? discussions
+                : discussions.filter(item => item.category === activeDiscussionFilter);
+
+            count.textContent = visibleDiscussions.length;
+
+            if (discussions.length === 0) {
+                list.innerHTML = `<div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-slate-400">${t.discussionEmpty}</div>`;
+                return;
+            }
+
+            if (visibleDiscussions.length === 0) {
+                list.innerHTML = `<div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-slate-400">${t.discussionFilteredEmpty}</div>`;
+                return;
+            }
+
+            list.innerHTML = visibleDiscussions.map(item => `
+                <article class="bg-white/5 border border-white/10 rounded-2xl p-5">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-3 py-1 bg-indigo-500/20 text-indigo-100 rounded-full text-xs font-black">${getDiscussionCategoryLabel(item.category)}</span>
+                            <span class="text-slate-400 text-xs">${escapeHTML(item.nickname || t.discussionAnonymous)}・${formatDiscussionTime(item.createdAt)}</span>
+                        </div>
+                        <button onclick="supportAnonymousDiscussion('${item.id}')" class="text-xs px-3 py-1 rounded-full font-bold transition ${isDiscussionLiked(item.id) ? 'bg-indigo-500 text-white' : 'bg-white/10 hover:bg-white/20 text-slate-200'}">
+                            👍 ${t.discussionSupport} ${Number(item.supportCount || 0)}
+                        </button>
+                    </div>
+                    <h4 class="text-xl font-black text-white mb-3">${escapeHTML(item.title)}</h4>
+                    <p class="text-slate-300 leading-relaxed whitespace-pre-line">${escapeHTML(item.content)}</p>
+                </article>
+            `).join('');
+        }
+
+
+        function getIndustryAdviceZh(industry) {
+            if (industry.includes("出版影音") || industry.includes("資通訊")) {
+                return "資通訊相關產業重視作品集與技術能力，建議整理專案成果、系統截圖、GitHub 或作品展示，讓薪資談判更有證據。";
+            }
+            if (industry.includes("金融") || industry.includes("保險")) {
+                return "金融保險業薪資差異常和證照、業績、風控或數據能力有關，建議補強證照、報表分析能力與績效紀錄。";
+            }
+            if (industry.includes("醫療")) {
+                return "醫療與社會工作服務業可強調專業證照、服務量、輪班負荷與責任風險，作為薪資調整的依據。";
+            }
+            if (industry.includes("住宿") || industry.includes("餐飲")) {
+                return "住宿餐飲業薪資基準較容易受工時與職務內容影響，建議確認加班、班表、職責範圍與實際薪資是否合理。";
+            }
+            if (industry.includes("製造") || industry.includes("工業")) {
+                return "工業與製造業可從技術熟練度、產線效率、品質改善、設備操作能力等面向建立談薪證據。";
+            }
+            return "建議蒐集同產業、同學歷與相近年齡層的薪資資料，搭配自己的工作成果，形成更完整的薪資討論依據。";
+        }
+
+        function getIndustryAdviceEn(industry) {
+            if (industry.includes("出版影音") || industry.includes("資通訊")) {
+                return "For media and ICT-related industries, portfolios and technical proof matter. Prepare project outcomes, screenshots, GitHub links, or product demos as evidence for negotiation.";
+            }
+            if (industry.includes("金融") || industry.includes("保險")) {
+                return "In finance and insurance, salary differences are often related to licenses, performance, risk control, or data skills. Strengthen certifications, reporting skills, and performance records.";
+            }
+            if (industry.includes("醫療")) {
+                return "In healthcare and social work, professional licenses, service volume, shift burden, and responsibility level can be used as evidence for salary adjustment.";
+            }
+            if (industry.includes("住宿") || industry.includes("餐飲")) {
+                return "In accommodation and food services, salary fairness is often affected by working hours and job scope. Check overtime, scheduling, responsibilities, and actual pay carefully.";
+            }
+            if (industry.includes("製造") || industry.includes("工業")) {
+                return "In industrial and manufacturing roles, use technical proficiency, production efficiency, quality improvement, and equipment operation ability as negotiation evidence.";
+            }
+            return "Collect salary information from the same industry, education level, and similar age group, then combine it with your own work achievements for a stronger salary discussion.";
+        }
+
+        function generateSmartAdvice() {
+            const t = I18N[currentLang];
+            const output = document.getElementById('smartAdviceOutput');
+
+            if (!lastDiagnosis) {
+                alert(t.smartAdviceNeedDiagnosis);
+                return;
+            }
+
+            const d = lastDiagnosis;
+            const isEn = currentLang === 'en';
+            const genderLabel = d.selectedGender === 'male' ? t.male : t.female;
+            const gapText = Math.abs(d.gapAmount).toLocaleString();
+
+            let levelText, summary, strategies = [], checklist = [], script = "", actionPlan = [];
+
+            if (isEn) {
+                if (d.ratio < 75) {
+                    levelText = "High gap risk";
+                    summary = `Your current salary is far below the estimated fairness benchmark. The gap is about NT$${gapText} per month, so you should prepare evidence and discuss salary adjustment carefully.`;
+                } else if (d.ratio < 85) {
+                    levelText = "Below benchmark";
+                    summary = `Your salary is below the fairness benchmark by about NT$${gapText} per month. You should review your job scope and prepare for a salary conversation.`;
+                } else if (d.ratio < 100) {
+                    levelText = "Close to benchmark";
+                    summary = `Your salary is close to the benchmark but still slightly lower. Focus on documenting performance and preparing for the next review cycle.`;
+                } else {
+                    levelText = "Meets benchmark";
+                    summary = `Your salary meets or exceeds the current benchmark. The next step is to maintain competitiveness and plan long-term growth.`;
+                }
+
+                strategies.push("Build a salary evidence file: include job responsibilities, achievements, overtime or workload records, and comparable salary data.");
+                strategies.push(getIndustryAdviceEn(d.industry));
+
+                if (d.selectedGender === "female" && d.ratio < 100) {
+                    strategies.push("Pay equity angle: document whether people with similar responsibilities receive different treatment, and focus the discussion on role value and equal pay for equal work.");
+                } else if (d.education === "高中" || d.education === "國中及以下") {
+                    strategies.push("Skill upgrade angle: choose one practical certificate, course, or portfolio project that can directly increase your value in the current industry.");
+                } else {
+                    strategies.push("Career mobility angle: compare internal promotion, transfer, and external job opportunities to understand your real market value.");
+                }
+
+                checklist = [
+                    "List three measurable work achievements from the last 3-6 months.",
+                    "Write down your current responsibilities and any tasks beyond your original role.",
+                    "Collect salary references from reliable public statistics or job platforms.",
+                    "Prepare a target salary range instead of only one number.",
+                    "Practice a calm, evidence-based conversation with your manager."
+                ];
+
+                script = `I would like to discuss my compensation based on my current responsibilities and recent contributions. According to the benchmark used in this diagnosis, my current salary is at ${d.ratio}% of the estimated fair benchmark. I hope we can review whether my salary matches my role scope and performance, and discuss a reasonable adjustment plan.`;
+
+                actionPlan = [
+                    "Week 1: Organize your responsibilities, achievements, and salary benchmark data.",
+                    "Week 2: Identify skill gaps and choose one improvement action, such as a certificate, course, or portfolio project.",
+                    "Week 3: Prepare your salary conversation outline and target range.",
+                    "Week 4: Schedule a discussion with your manager or evaluate alternative opportunities."
+                ];
+            } else {
+                if (d.ratio < 75) {
+                    levelText = "高度落差風險";
+                    summary = `您的目前薪資明顯低於公平基準，月薪差距約 ${gapText} 元，建議優先整理證據並謹慎規劃談薪。`;
+                } else if (d.ratio < 85) {
+                    levelText = "低於基準";
+                    summary = `您的薪資低於公平基準，月薪差距約 ${gapText} 元，建議檢視職責範圍並準備薪資溝通。`;
+                } else if (d.ratio < 100) {
+                    levelText = "接近基準";
+                    summary = `您的薪資接近公平基準，但仍略低於估算值，建議累積績效證據，為下一次調薪或轉職做準備。`;
+                } else {
+                    levelText = "符合基準";
+                    summary = `您的薪資已達到或高於目前公平基準，後續重點是維持競爭力與規劃長期職涯成長。`;
+                }
+
+                strategies.push("建立薪資佐證資料夾：整理工作職責、實際貢獻、加班或工作量紀錄，以及同產業薪資資料。");
+                strategies.push(getIndustryAdviceZh(d.industry));
+
+                if (d.selectedGender === "female" && d.ratio < 100) {
+                    strategies.push("性別平權角度：若同職位、同責任卻存在薪資差距，建議以職務價值與同工同酬作為溝通主軸。");
+                } else if (d.education === "高中" || d.education === "國中及以下") {
+                    strategies.push("技能提升角度：選擇一項能直接增加產業競爭力的證照、課程或作品集，提升談薪籌碼。");
+                } else {
+                    strategies.push("職涯流動角度：比較內部調薪、轉部門與外部職缺，確認自己的實際市場價值。");
+                }
+
+                checklist = [
+                    "列出近 3 到 6 個月內最具體的三項工作成果。",
+                    "整理目前職責，以及超出原本工作範圍的任務。",
+                    "蒐集官方統計或求職平台上的薪資參考資料。",
+                    "準備一個合理薪資區間，不要只準備單一數字。",
+                    "用冷靜、以證據為主的方式練習與主管溝通。"
+                ];
+
+                script = `我想根據目前的工作職責與近期貢獻，討論薪資是否有調整空間。依照本系統的公平基準估算，我目前薪資約為基準的 ${d.ratio}%。希望能一起檢視我的職務內容、績效成果與薪資是否相符，並討論合理的調整方向。`;
+
+                actionPlan = [
+                    "第 1 週：整理職責、成果與薪資基準資料。",
+                    "第 2 週：確認自己的技能缺口，選擇一項證照、課程或作品集改善方向。",
+                    "第 3 週：準備談薪大綱與合理薪資區間。",
+                    "第 4 週：安排與主管溝通，或同步評估其他職涯機會。"
+                ];
+            }
+
+            output.classList.remove('hidden');
+            output.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-xs font-black text-indigo-600 uppercase tracking-widest mb-2">${levelText}</p>
+                        <h6 class="text-2xl font-black text-slate-900 mb-3">${isEn ? "Personalized Diagnosis Summary" : "個人化診斷摘要"}</h6>
+                        <p>${summary}</p>
+                        <p class="mt-3 text-sm text-slate-500">
+                            ${isEn ? "Diagnosis conditions" : "診斷條件"}：
+                            ${displayLabel(d.year)}｜${displayLabel(d.education)}｜${displayLabel(d.age)}｜${displayLabel(d.industry)}｜${genderLabel}
+                        </p>
+                    </div>
+
+                    <div>
+                        <h6 class="font-black text-slate-900 mb-3">${isEn ? "Improvement Strategies" : "改善策略"}</h6>
+                        <ul class="list-disc pl-6 space-y-2">
+                            ${strategies.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h6 class="font-black text-slate-900 mb-3">${isEn ? "Negotiation Preparation Checklist" : "談薪準備清單"}</h6>
+                        <ul class="list-disc pl-6 space-y-2">
+                            ${checklist.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h6 class="font-black text-slate-900 mb-3">${isEn ? "Suggested Conversation Script" : "談薪話術範例"}</h6>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 text-slate-600">${script}</div>
+                    </div>
+
+                    <div>
+                        <h6 class="font-black text-slate-900 mb-3">${isEn ? "30-day Action Plan" : "30 天行動計畫"}</h6>
+                        <ol class="list-decimal pl-6 space-y-2">
+                            ${actionPlan.map(item => `<li>${item}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+            `;
+        }
+
+
 function generateSolutions(gender, edu) {
             const grid = document.getElementById('solutionGrid');
-            const sols = [
-                { title: "", icon: "📊", desc: "" },
-                { title: "", icon: "⚖️", desc: "" }
+            const isEn = currentLang === 'en';
+
+            const sols = isEn ? [
+                {
+                    title: "1. Collect concrete evidence",
+                    icon: "📁",
+                    desc: `
+                        <strong>Preparation:</strong> Before asserting your rights, prepare evidence for later proof.<br>
+                        <strong>Employment relationship:</strong> labor contract, offer letter, employment certificate.<br>
+                        <strong>Salary proof:</strong> payslips, bank transfer records, withholding tax statement.<br>
+                        <strong>Attendance and overtime records:</strong> clock-in records, overtime request forms, and work assignment or working-hour messages from communication apps such as LINE.
+                    `
+                },
+                {
+                    title: "2. Call official consultation hotlines",
+                    icon: "☎️",
+                    desc: `
+                        If you are unsure how to calculate unpaid wages or evaluate your rights, use official consultation channels first.<br>
+                        <strong>1955 Labor Consultation and Complaint Hotline:</strong> free of charge, available year-round, and provides labor law consultation.<br>
+                        <strong>Local labor departments:</strong> for example, Taipei City residents may call 1999 and ask for the Labor Standards Division; Taichung City may call (04) 2228-9111 ext. 35200.
+                    `
+                },
+                {
+                    title: "3. File a formal complaint or seek remedies",
+                    icon: "⚖️",
+                    desc: `
+                        <strong>Administrative complaint and labor inspection:</strong> report to the local labor department and request labor inspection. If the employer violates the law, the authority may impose penalties and require payment within a deadline.<br>
+                        <strong>Apply for labor-management dispute mediation:</strong> mediation is usually faster than litigation. Download and complete the mediation application form from the labor department website where you work, or submit through the local government's online labor dispute mediation system.
+                    `
+                }
+            ] : [
+                {
+                    title: "1. 具體蒐證",
+                    icon: "📁",
+                    desc: `
+                        <strong>準備事項：</strong>在主張權利前，請備妥以下證據以利後續舉證。<br>
+                        <strong>勞雇關係證明：</strong>勞動契約、錄取通知書（Offer Letter）、在職證明。<br>
+                        <strong>薪資證明：</strong>薪資單、匯款存摺明細、扣繳憑單。<br>
+                        <strong>出勤與加班紀錄：</strong>打卡紀錄、加班申請單、通訊軟體（LINE）交辦工作與工時的對話紀錄。
+                    `
+                },
+                {
+                    title: "2. 撥打專線諮詢",
+                    icon: "☎️",
+                    desc: `
+                        若不確定如何計算欠薪或評估自身權益，可先利用官方諮詢管道。<br>
+                        <strong>1955 勞工諮詢申訴專線：</strong>全年無休、免付費，專門提供勞動法令諮詢。<br>
+                        <strong>各縣市勞工局：</strong>如台北市請撥打 1999 轉勞動基準科；台中市撥打 (04)22289111 轉 35200。
+                    `
+                },
+                {
+                    title: "3. 正式提出申訴與救濟",
+                    icon: "⚖️",
+                    desc: `
+                        <strong>行政申訴與勞檢：</strong>向地方勞工局提出檢舉，要求勞動檢查。若雇主違法，勞工局可依法開罰並要求限期給付。<br>
+                        <strong>申請勞資爭議調解：</strong>調解程序通常較訴訟快速。請至工作地勞工局官網下載填寫「調解申請書」，或使用地方政府的「線上勞資爭議調解申辦系統」送件。
+                    `
+                }
             ];
-            if (gender === 'female') sols.push({ title: "", icon: "✊", desc: "" });
-            else if (edu === '高中' || edu === '國中及以下') sols.push({ title: "", icon: "🚀", desc: "" });
-            else sols.push({ title: "", icon: "🔍", desc: "" });
 
             grid.innerHTML = sols.map(s => `
                 <div class="solution-card bg-slate-50 p-6 rounded-2xl border border-slate-100">
                     <div class="text-2xl mb-3">${s.icon}</div>
-                    <h6 class="font-bold mb-2 text-slate-800">${s.title}</h6>
+                    <h6 class="font-bold mb-3 text-slate-800">${s.title}</h6>
                     <p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p>
                 </div>
             `).join('');
@@ -532,6 +1564,5 @@ function generateSolutions(gender, edu) {
     </script>
 </body>
 </html>
-
 
 
