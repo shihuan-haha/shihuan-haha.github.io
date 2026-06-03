@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -32,7 +31,7 @@
             <div class="hidden md:flex gap-8 items-center">
                 <a href="#stats" class="text-slate-500 hover:text-indigo-600 font-bold transition">趨勢分析</a>
                 <a href="#compare" class="text-slate-500 hover:text-indigo-600 font-bold transition">薪資診斷</a>
-                <a href="#discussion" class="text-slate-500 hover:text-indigo-600 font-bold transition">匿名討論</a>
+                <a href="#report" class="text-slate-500 hover:text-indigo-600 font-bold transition">匿名回報</a>
                 <a href="#game" class="text-slate-500 hover:text-indigo-600 font-bold transition">知識小挑戰</a>
                 <div class="flex items-center gap-2 bg-slate-100 rounded-full p-1 text-xs font-bold">
                     <button onclick="setLanguage('zh')" id="lang-zh" class="px-3 py-1 rounded-full bg-indigo-600 text-white transition">中文</button>
@@ -204,82 +203,84 @@
             </div>
         </section>
 
-        <!-- 匿名討論區 -->
-        <section id="discussion" class="mt-16">
+        <!-- 匿名回報功能 -->
+        <section id="report" class="mt-16">
             <div class="bg-white rounded-[3rem] p-10 md:p-16 card-shadow border border-slate-100">
                 <div class="max-w-6xl mx-auto">
                     <div class="text-center mb-10">
-                        <span id="discussionEyebrow" class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-black mb-4">匿名交流空間</span>
-                        <h2 id="discussionTitle" class="text-4xl font-black mb-4 tracking-tight text-slate-900">匿名討論區</h2>
-                        <p id="discussionDesc" class="text-slate-500 text-lg leading-relaxed">
-                            以匿名方式分享薪資、福利、談薪與職場公平經驗。請勿留下姓名、電話、Email、員工編號或其他可識別個人的資訊。
+                        <span id="reportEyebrow" class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-black mb-4">匿名資料共創</span>
+                        <h2 id="reportTitle" class="text-4xl font-black mb-4 tracking-tight text-slate-900">匿名回報公司福利與薪資</h2>
+                        <p id="reportDesc" class="text-slate-500 text-lg leading-relaxed">
+                            使用者可匿名提交真實公司的福利與薪資資訊。系統不收集姓名、Email、電話或員工編號，資料會儲存在 Supabase 雲端資料庫，供所有使用者共同查看。
                         </p>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8">
                         <div class="bg-slate-50 rounded-[2rem] p-8 border border-slate-100">
-                            <h3 id="discussionFormTitle" class="text-2xl font-black text-slate-900 mb-6">發起匿名討論</h3>
+                            <h3 id="reportFormTitle" class="text-2xl font-black text-slate-900 mb-6">提交匿名回報</h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                                 <div class="space-y-2">
-                                    <label id="discussionNicknameLabel" class="text-sm font-bold text-slate-600">匿名暱稱</label>
-                                    <input type="text" id="discussionNickname" maxlength="20" placeholder="例：匿名上班族" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                    <label id="reportCompanyLabel" class="text-sm font-bold text-slate-600">公司名稱</label>
+                                    <input type="text" id="reportCompany" maxlength="40" placeholder="例：ABC科技" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
                                 </div>
                                 <div class="space-y-2">
-                                    <label id="discussionCategoryLabel" class="text-sm font-bold text-slate-600">討論分類</label>
-                                    <select id="discussionCategory" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                        <option>薪資疑問</option>
-                                        <option>福利經驗</option>
-                                        <option>談薪經驗</option>
-                                        <option>勞權諮詢</option>
-                                        <option>求職分享</option>
-                                        <option>其他</option>
-                                    </select>
+                                    <label id="reportJobLabel" class="text-sm font-bold text-slate-600">職位</label>
+                                    <input type="text" id="reportJobTitle" maxlength="40" placeholder="例：前端工程師" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label id="reportSalaryLabel" class="text-sm font-bold text-slate-600">月薪 TWD</label>
+                                    <input type="number" id="reportSalary" min="1" placeholder="例：52000" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
                                 </div>
                             </div>
 
-                            <div class="space-y-2 mb-5">
-                                <label id="discussionPostTitleLabel" class="text-sm font-bold text-slate-600">討論標題</label>
-                                <input type="text" id="discussionPostTitle" maxlength="60" placeholder="例：薪資低於基準時該怎麼談？" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                            <div class="mb-6">
+                                <p id="reportBenefitTitle" class="text-sm font-bold text-slate-600 mb-3">福利</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600">
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="bonus" class="accent-indigo-600"><span id="reportBenefitBonus">年終 / 獎金</span></label>
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="insurance" class="accent-indigo-600"><span id="reportBenefitInsurance">保險 / 勞健保</span></label>
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="remote" class="accent-indigo-600"><span id="reportBenefitRemote">遠端 / 彈性工時</span></label>
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="training" class="accent-indigo-600"><span id="reportBenefitTraining">教育訓練補助</span></label>
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="meal" class="accent-indigo-600"><span id="reportBenefitMeal">餐費 / 交通補助</span></label>
+                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="leave" class="accent-indigo-600"><span id="reportBenefitLeave">優於法規休假</span></label>
+                                </div>
                             </div>
 
-                            <div class="space-y-2 mb-5">
-                                <label id="discussionContentLabel" class="text-sm font-bold text-slate-600">討論內容</label>
-                                <textarea id="discussionContent" rows="7" maxlength="600" placeholder="請描述你的情況、想詢問的問題或經驗分享。避免填寫可識別個人的資訊。" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none"></textarea>
+                            <div class="space-y-2 mb-6">
+                                <label id="reportBenefitDetailLabel" class="text-sm font-bold text-slate-600">福利詳細資訊</label>
+                                <textarea id="reportBenefitDetail" rows="4" maxlength="300" placeholder="例：年終約 2 個月、每月交通補助 1200 元、每週可遠端 2 天" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none"></textarea>
                             </div>
 
-                            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-sm text-amber-700 mb-5" id="discussionPrivacyNotice">
-                                發文前請再次確認：不要填寫姓名、Email、電話、員工編號、精確部門或任何可能識別個人的內容。
+                            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-sm text-amber-700 mb-5" id="reportPrivacyNotice">
+                                請勿填寫姓名、Email、電話、員工編號、精確部門或任何可識別個人的內容。
                             </div>
 
                             <label class="flex items-start gap-3 text-sm text-slate-600 mb-6">
-                                <input type="checkbox" id="discussionPrivacyCheck" class="mt-1 accent-indigo-600">
-                                <span id="discussionPrivacyCheckText">我確認內容不包含可識別個人的資訊。</span>
+                                <input type="checkbox" id="reportPrivacyCheck" class="mt-1 accent-indigo-600">
+                                <span id="reportPrivacyCheckText">我確認此回報不包含可識別個人的資訊。</span>
                             </label>
 
-                            <button onclick="submitAnonymousDiscussion()" id="discussionSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
-                                匿名發表
+                            <button onclick="submitAnonymousReport()" id="reportSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
+                                匿名提交
                             </button>
                         </div>
 
                         <div class="bg-slate-900 rounded-[2rem] p-8 text-white">
                             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                                 <div>
-                                    <h3 id="discussionBoardTitle" class="text-2xl font-black mb-3">匿名討論串</h3>
-                                    <p id="discussionBoardDesc" class="text-slate-400 leading-relaxed">所有內容只會儲存在此瀏覽器，適合作為前端 Demo。</p>
+                                    <h3 id="reportBoardTitle" class="text-2xl font-black mb-3">匿名回報統計</h3>
+                                    <p id="reportBoardDesc" class="text-slate-400 leading-relaxed">提交後會更新此瀏覽器中的匿名薪資與福利樣本。</p>
                                 </div>
                                 <div class="bg-white/10 border border-white/10 rounded-2xl px-5 py-4 shrink-0">
-                                    <p id="discussionCountLabel" class="text-slate-400 text-xs font-bold mb-1">討論數</p>
-                                    <p id="discussionCount" class="text-3xl font-black">0</p>
+                                    <p id="reportCountLabel" class="text-slate-400 text-xs font-bold mb-1">回報數</p>
+                                    <p id="reportCount" class="text-3xl font-black">0</p>
                                 </div>
                             </div>
 
-                            <div class="mb-5">
-                                <p id="discussionFilterLabel" class="text-slate-400 text-sm font-bold mb-3">選擇想看的討論區</p>
-                                <div id="discussionFilterBar" class="flex flex-wrap gap-2"></div>
-                            </div>
+                            <div id="reportStats" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
 
-                            <div id="discussionList" class="space-y-4 max-h-[520px] overflow-y-auto pr-1"></div>
+                            <h4 id="reportRecentTitle" class="text-xl font-black mb-4">最近匿名回報</h4>
+                            <div id="reportList" class="space-y-4 max-h-[420px] overflow-y-auto pr-1"></div>
                         </div>
                     </div>
                 </div>
@@ -343,7 +344,7 @@
                 pageTitle: "EqualPay - 內建大數據薪資儀表板 (SDG 10)",
                 navStats: "趨勢分析",
                 navCompare: "薪資診斷",
-                navReport: "匿名討論",
+                navReport: "匿名回報",
                 navGame: "知識小挑戰",
                 status: "已自動載入 110-113 年官方完整數據",
                 badge: "SDG 10：減少職場不平等",
@@ -366,41 +367,46 @@
                 smartAdviceButton: "產生診斷建議",
                 smartAdviceNeedDiagnosis: "請先完成薪資公平性診斷，再產生診斷建議。",
                 solutionTitle: "薪資糾紛解決三步驟",
-                discussionEyebrow: "匿名交流空間",
-                discussionTitle: "匿名討論區",
-                discussionDesc: "以匿名方式分享薪資、福利、談薪與職場公平經驗。請勿留下姓名、電話、Email、員工編號或其他可識別個人的資訊。",
-                discussionFormTitle: "發起匿名討論",
-                discussionNicknameLabel: "匿名暱稱",
-                discussionNicknamePlaceholder: "例：匿名上班族",
-                discussionCategoryLabel: "討論分類",
-                discussionPostTitleLabel: "討論標題",
-                discussionPostTitlePlaceholder: "例：薪資低於基準時該怎麼談？",
-                discussionContentLabel: "討論內容",
-                discussionContentPlaceholder: "請描述你的情況、想詢問的問題或經驗分享。避免填寫可識別個人的資訊。",
-                discussionPrivacyNotice: "發文前請再次確認：不要填寫姓名、Email、電話、員工編號、精確部門或任何可能識別個人的內容。",
-                discussionPrivacyCheckText: "我確認內容不包含可識別個人的資訊。",
-                discussionSubmit: "匿名發表",
-                discussionBoardTitle: "匿名討論串",
-                discussionBoardDesc: "所有內容只會儲存在此瀏覽器，適合作為前端 Demo。",
-                discussionCountLabel: "顯示筆數",
-                discussionFilterLabel: "選擇想看的討論區",
-                discussionFilterAll: "全部",
-                discussionFilteredEmpty: "此分類目前尚無討論，歡迎發起第一篇。",
-                discussionNeedTitle: "請輸入討論標題。",
-                discussionNeedContent: "請輸入討論內容。",
-                discussionNeedPrivacy: "請先確認內容不包含可識別個人的資訊。",
-                discussionSuccess: "匿名討論已發表。",
-                discussionEmpty: "目前尚無討論。成為第一個發起討論的人吧！",
-                discussionSupport: "我也遇過",
-                discussionAnonymous: "匿名使用者",
-                discussionCategories: {
-                    salary: "薪資疑問",
-                    benefits: "福利經驗",
-                    negotiation: "談薪經驗",
-                    rights: "勞權諮詢",
-                    job: "求職分享",
-                    other: "其他"
+                reportEyebrow: "匿名資料共創",
+                reportTitle: "匿名回報公司福利與薪資",
+                reportDesc: "使用者可匿名提交真實公司的福利與薪資資訊。系統不收集姓名、Email、電話或員工編號，資料會儲存在 Supabase 雲端資料庫，供所有使用者共同查看。",
+                reportFormTitle: "提交匿名回報",
+                reportCompanyLabel: "公司名稱",
+                reportCompanyPlaceholder: "例：ABC科技",
+                reportJobLabel: "職位",
+                reportJobPlaceholder: "例：前端工程師",
+                reportSalaryLabel: "月薪 TWD",
+                reportSalaryPlaceholder: "例：52000",
+                reportBenefitTitle: "福利",
+                reportBenefitDetailLabel: "福利詳細資訊",
+                reportBenefitDetailPlaceholder: "例：年終約 2 個月、每月交通補助 1200 元、每週可遠端 2 天",
+                reportBenefits: {
+                    bonus: "年終 / 獎金",
+                    insurance: "保險 / 勞健保",
+                    remote: "遠端 / 彈性工時",
+                    training: "教育訓練補助",
+                    meal: "餐費 / 交通補助",
+                    leave: "優於法規休假"
                 },
+                reportPrivacyNotice: "請勿填寫姓名、Email、電話、員工編號、精確部門或任何可識別個人的內容。",
+                reportPrivacyCheckText: "我確認此回報不包含可識別個人的資訊。",
+                reportSubmit: "匿名提交",
+                reportBoardTitle: "匿名回報統計",
+                reportBoardDesc: "提交後會更新此瀏覽器中的匿名薪資與福利樣本。",
+                reportCountLabel: "回報數",
+                reportRecentTitle: "最近匿名回報",
+                reportNeedCompany: "請輸入公司名稱。",
+                reportNeedJob: "請輸入職位。",
+                reportNeedSalary: "請輸入有效的月薪。",
+                reportNeedPrivacy: "請先確認回報不包含可識別個人的資訊。",
+                reportSuccess: "匿名回報已提交。",
+                reportEmpty: "目前尚無匿名回報資料。",
+                reportAvgSalary: "平均月薪",
+                reportTopBenefit: "最多人回報福利",
+                reportNoBenefit: "尚無福利資料",
+                reportCompany: "公司",
+                reportJob: "職位",
+                reportSalary: "月薪",
                 gameEyebrow: "知識小挑戰",
                 gameTitle: "知識小挑戰",
                 gameDesc: "透過情境選擇題，測試你是否了解薪資透明、同工同酬與職場公平。",
@@ -493,7 +499,7 @@
                 pageTitle: "EqualPay - Built-in Salary Data Dashboard (SDG 10)",
                 navStats: "Trend Analysis",
                 navCompare: "Salary Diagnosis",
-                navReport: "Anonymous Discussion",
+                navReport: "Anonymous Report",
                 navGame: "Knowledge Challenge",
                 status: "Loaded official data from ROC Years 110-113",
                 badge: "SDG 10: Reducing Workplace Inequality",
@@ -516,41 +522,46 @@
                 smartAdviceButton: "Generate Diagnosis Suggestions",
                 smartAdviceNeedDiagnosis: "Please complete the salary fairness diagnosis before generating diagnosis suggestions.",
                 solutionTitle: "Three Steps to Resolve Salary Disputes",
-                discussionEyebrow: "Anonymous Exchange Space",
-                discussionTitle: "Anonymous Discussion Board",
-                discussionDesc: "Share salary, benefits, negotiation, and workplace fairness experiences anonymously. Do not leave names, phone numbers, emails, employee IDs, or other personally identifiable information.",
-                discussionFormTitle: "Start an Anonymous Discussion",
-                discussionNicknameLabel: "Anonymous Nickname",
-                discussionNicknamePlaceholder: "Example: Anonymous Worker",
-                discussionCategoryLabel: "Discussion Category",
-                discussionPostTitleLabel: "Discussion Title",
-                discussionPostTitlePlaceholder: "Example: How should I negotiate when my salary is below the benchmark?",
-                discussionContentLabel: "Discussion Content",
-                discussionContentPlaceholder: "Describe your situation, question, or experience. Avoid entering personally identifiable information.",
-                discussionPrivacyNotice: "Before posting, confirm again: do not enter your name, email, phone number, employee ID, exact department, or anything that may identify a person.",
-                discussionPrivacyCheckText: "I confirm that the content does not include personally identifiable information.",
-                discussionSubmit: "Post Anonymously",
-                discussionBoardTitle: "Anonymous Threads",
-                discussionBoardDesc: "All content is stored only in this browser, suitable for a frontend demo.",
-                discussionCountLabel: "Visible Threads",
-                discussionFilterLabel: "Choose a discussion board",
-                discussionFilterAll: "All",
-                discussionFilteredEmpty: "No discussions in this category yet. Start the first one.",
-                discussionNeedTitle: "Please enter a discussion title.",
-                discussionNeedContent: "Please enter discussion content.",
-                discussionNeedPrivacy: "Please confirm that the content does not include personally identifiable information.",
-                discussionSuccess: "Anonymous discussion posted.",
-                discussionEmpty: "No discussions yet. Be the first to start one!",
-                discussionSupport: "I experienced this too",
-                discussionAnonymous: "Anonymous User",
-                discussionCategories: {
-                    salary: "Salary Question",
-                    benefits: "Benefits Experience",
-                    negotiation: "Negotiation Experience",
-                    rights: "Labor Rights Consultation",
-                    job: "Job Search Sharing",
-                    other: "Other"
+                reportEyebrow: "Anonymous Data Contribution",
+                reportTitle: "Anonymous Company Benefits and Salary Report",
+                reportDesc: "Users can anonymously submit real company benefits and salary information. The system does not collect names, emails, phone numbers, or employee IDs. Data is stored in the Supabase cloud database so users can view shared reports.",
+                reportFormTitle: "Submit Anonymous Report",
+                reportCompanyLabel: "Company Name",
+                reportCompanyPlaceholder: "Example: ABC Tech",
+                reportJobLabel: "Position",
+                reportJobPlaceholder: "Example: Frontend Engineer",
+                reportSalaryLabel: "Monthly Salary TWD",
+                reportSalaryPlaceholder: "Example: 52000",
+                reportBenefitTitle: "Benefits",
+                reportBenefitDetailLabel: "Benefit Details",
+                reportBenefitDetailPlaceholder: "Example: year-end bonus around 2 months, NT$1,200 monthly transport allowance, remote work 2 days per week",
+                reportBenefits: {
+                    bonus: "Year-end / Bonus",
+                    insurance: "Insurance / Labor & Health Insurance",
+                    remote: "Remote / Flexible Hours",
+                    training: "Training Subsidy",
+                    meal: "Meal / Transport Allowance",
+                    leave: "Leave Better Than Legal Minimum"
                 },
+                reportPrivacyNotice: "Do not enter your name, email, phone number, employee ID, exact department, or anything personally identifiable.",
+                reportPrivacyCheckText: "I confirm that this report does not include personally identifiable information.",
+                reportSubmit: "Submit Anonymously",
+                reportBoardTitle: "Anonymous Report Statistics",
+                reportBoardDesc: "After submission, the anonymous salary and benefits samples in this browser will be updated.",
+                reportCountLabel: "Reports",
+                reportRecentTitle: "Recent Anonymous Reports",
+                reportNeedCompany: "Please enter a company name.",
+                reportNeedJob: "Please enter a position.",
+                reportNeedSalary: "Please enter a valid monthly salary.",
+                reportNeedPrivacy: "Please confirm that the report does not include personally identifiable information.",
+                reportSuccess: "Anonymous report submitted.",
+                reportEmpty: "No anonymous report data yet.",
+                reportAvgSalary: "Average Monthly Salary",
+                reportTopBenefit: "Most Reported Benefit",
+                reportNoBenefit: "No benefit data yet",
+                reportCompany: "Company",
+                reportJob: "Position",
+                reportSalary: "Monthly Salary",
                 gameEyebrow: "Knowledge Challenge",
                 gameTitle: "Knowledge Challenge",
                 gameDesc: "Answer scenario-based questions to test your understanding of pay transparency, equal pay, and workplace fairness.",
@@ -709,7 +720,7 @@
 
             setText('nav a[href="#stats"]', t.navStats);
             setText('nav a[href="#compare"]', t.navCompare);
-            setText('nav a[href="#discussion"]', t.navReport);
+            setText('nav a[href="#report"]', t.navReport);
             setText('nav a[href="#game"]', t.navGame);
 
             const dataStatus = document.getElementById('dataStatus');
@@ -773,21 +784,28 @@
                 solutionHeading.innerHTML = `<span class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-sm">💡</span>${t.solutionTitle}`;
             }
 
-            setText('#discussionEyebrow', t.discussionEyebrow);
-            setText('#discussionTitle', t.discussionTitle);
-            setText('#discussionDesc', t.discussionDesc);
-            setText('#discussionFormTitle', t.discussionFormTitle);
-            setText('#discussionNicknameLabel', t.discussionNicknameLabel);
-            setText('#discussionCategoryLabel', t.discussionCategoryLabel);
-            setText('#discussionPostTitleLabel', t.discussionPostTitleLabel);
-            setText('#discussionContentLabel', t.discussionContentLabel);
-            setText('#discussionPrivacyNotice', t.discussionPrivacyNotice);
-            setText('#discussionPrivacyCheckText', t.discussionPrivacyCheckText);
-            setText('#discussionSubmitBtn', t.discussionSubmit);
-            setText('#discussionBoardTitle', t.discussionBoardTitle);
-            setText('#discussionBoardDesc', t.discussionBoardDesc);
-            setText('#discussionCountLabel', t.discussionCountLabel);
-            setText('#discussionFilterLabel', t.discussionFilterLabel);
+            setText('#reportEyebrow', t.reportEyebrow);
+            setText('#reportTitle', t.reportTitle);
+            setText('#reportDesc', t.reportDesc);
+            setText('#reportFormTitle', t.reportFormTitle);
+            setText('#reportCompanyLabel', t.reportCompanyLabel);
+            setText('#reportJobLabel', t.reportJobLabel);
+            setText('#reportSalaryLabel', t.reportSalaryLabel);
+            setText('#reportBenefitTitle', t.reportBenefitTitle);
+            setText('#reportBenefitDetailLabel', t.reportBenefitDetailLabel);
+            setText('#reportBenefitBonus', t.reportBenefits.bonus);
+            setText('#reportBenefitInsurance', t.reportBenefits.insurance);
+            setText('#reportBenefitRemote', t.reportBenefits.remote);
+            setText('#reportBenefitTraining', t.reportBenefits.training);
+            setText('#reportBenefitMeal', t.reportBenefits.meal);
+            setText('#reportBenefitLeave', t.reportBenefits.leave);
+            setText('#reportPrivacyNotice', t.reportPrivacyNotice);
+            setText('#reportPrivacyCheckText', t.reportPrivacyCheckText);
+            setText('#reportSubmitBtn', t.reportSubmit);
+            setText('#reportBoardTitle', t.reportBoardTitle);
+            setText('#reportBoardDesc', t.reportBoardDesc);
+            setText('#reportCountLabel', t.reportCountLabel);
+            setText('#reportRecentTitle', t.reportRecentTitle);
 
             setText('#gameEyebrow', t.gameEyebrow);
             setText('#gameTitle', t.gameTitle);
@@ -796,15 +814,16 @@
             setText('#gameRestartBtn', t.gameRestart);
             updateFairnessGameText();
 
-            const discussionNickname = document.getElementById('discussionNickname');
-            if (discussionNickname) discussionNickname.placeholder = t.discussionNicknamePlaceholder;
-            const discussionPostTitle = document.getElementById('discussionPostTitle');
-            if (discussionPostTitle) discussionPostTitle.placeholder = t.discussionPostTitlePlaceholder;
-            const discussionContent = document.getElementById('discussionContent');
-            if (discussionContent) discussionContent.placeholder = t.discussionContentPlaceholder;
+            const reportCompany = document.getElementById('reportCompany');
+            if (reportCompany) reportCompany.placeholder = t.reportCompanyPlaceholder;
+            const reportJobTitle = document.getElementById('reportJobTitle');
+            if (reportJobTitle) reportJobTitle.placeholder = t.reportJobPlaceholder;
+            const reportSalary = document.getElementById('reportSalary');
+            if (reportSalary) reportSalary.placeholder = t.reportSalaryPlaceholder;
+            const reportBenefitDetail = document.getElementById('reportBenefitDetail');
+            if (reportBenefitDetail) reportBenefitDetail.placeholder = t.reportBenefitDetailPlaceholder;
 
-            renderDiscussionFilters();
-            renderAnonymousDiscussions();
+            renderAnonymousReports();
 
             const footerPs = document.querySelectorAll('footer p');
             if (footerPs[0]) footerPs[0].textContent = t.footerSource;
@@ -1104,209 +1123,6 @@
         }
 
 
-        const DISCUSSION_STORAGE_KEY = "equalpayAnonymousDiscussions";
-        const DISCUSSION_LIKED_STORAGE_KEY = "equalpayLikedDiscussions";
-        let activeDiscussionFilter = "all";
-        const DISCUSSION_FILTER_ORDER = ["all", "salary", "benefits", "negotiation", "rights", "job", "other"];
-
-        function getAnonymousDiscussions() {
-            try {
-                return JSON.parse(localStorage.getItem(DISCUSSION_STORAGE_KEY)) || [];
-            } catch (error) {
-                return [];
-            }
-        }
-
-        function saveAnonymousDiscussions(discussions) {
-            localStorage.setItem(DISCUSSION_STORAGE_KEY, JSON.stringify(discussions));
-        }
-
-        function getLikedDiscussionIds() {
-            try {
-                return JSON.parse(localStorage.getItem(DISCUSSION_LIKED_STORAGE_KEY)) || [];
-            } catch (error) {
-                return [];
-            }
-        }
-
-        function saveLikedDiscussionIds(ids) {
-            localStorage.setItem(DISCUSSION_LIKED_STORAGE_KEY, JSON.stringify(ids));
-        }
-
-        function isDiscussionLiked(id) {
-            return getLikedDiscussionIds().includes(id);
-        }
-
-        function getDiscussionCategoryKey(categoryText) {
-            const map = {
-                "薪資疑問": "salary",
-                "福利經驗": "benefits",
-                "談薪經驗": "negotiation",
-                "勞權諮詢": "rights",
-                "求職分享": "job",
-                "其他": "other"
-            };
-            return map[categoryText] || "other";
-        }
-
-        function getDiscussionCategoryLabel(categoryKey) {
-            return I18N[currentLang].discussionCategories[categoryKey] || I18N[currentLang].discussionCategories.other;
-        }
-
-        function getDiscussionFilterLabel(filterKey) {
-            return filterKey === "all" ? I18N[currentLang].discussionFilterAll : getDiscussionCategoryLabel(filterKey);
-        }
-
-        function renderDiscussionFilters() {
-            const bar = document.getElementById('discussionFilterBar');
-            if (!bar) return;
-
-            bar.innerHTML = DISCUSSION_FILTER_ORDER.map(filterKey => {
-                const activeClass = filterKey === activeDiscussionFilter
-                    ? "bg-indigo-500 text-white border-indigo-400"
-                    : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:text-white";
-
-                return `
-                    <button onclick="setDiscussionFilter('${filterKey}')" class="px-4 py-2 rounded-full border text-sm font-black transition ${activeClass}">
-                        ${getDiscussionFilterLabel(filterKey)}
-                    </button>
-                `;
-            }).join('');
-        }
-
-        function setDiscussionFilter(filterKey) {
-            activeDiscussionFilter = filterKey;
-            renderDiscussionFilters();
-            renderAnonymousDiscussions();
-        }
-
-        function submitAnonymousDiscussion() {
-            const t = I18N[currentLang];
-            const nickname = document.getElementById('discussionNickname').value.trim().slice(0, 20) || t.discussionAnonymous;
-            const categoryText = document.getElementById('discussionCategory').value;
-            const category = getDiscussionCategoryKey(categoryText);
-            const title = document.getElementById('discussionPostTitle').value.trim().slice(0, 60);
-            const content = document.getElementById('discussionContent').value.trim().slice(0, 600);
-            const privacyChecked = document.getElementById('discussionPrivacyCheck').checked;
-
-            if (!title) {
-                alert(t.discussionNeedTitle);
-                return;
-            }
-
-            if (!content) {
-                alert(t.discussionNeedContent);
-                return;
-            }
-
-            if (!privacyChecked) {
-                alert(t.discussionNeedPrivacy);
-                return;
-            }
-
-            const discussions = getAnonymousDiscussions();
-            discussions.unshift({
-                id: Date.now().toString(),
-                nickname,
-                category,
-                title,
-                content,
-                supportCount: 0,
-                createdAt: new Date().toISOString()
-            });
-
-            saveAnonymousDiscussions(discussions);
-
-            document.getElementById('discussionNickname').value = "";
-            document.getElementById('discussionPostTitle').value = "";
-            document.getElementById('discussionContent').value = "";
-            document.getElementById('discussionPrivacyCheck').checked = false;
-
-            renderAnonymousDiscussions();
-            alert(t.discussionSuccess);
-        }
-
-        function supportAnonymousDiscussion(id) {
-            const discussions = getAnonymousDiscussions();
-            const likedIds = getLikedDiscussionIds();
-            const target = discussions.find(item => item.id === id);
-            if (!target) return;
-
-            const likedIndex = likedIds.indexOf(id);
-
-            if (likedIndex >= 0) {
-                likedIds.splice(likedIndex, 1);
-                target.supportCount = Math.max(Number(target.supportCount || 0) - 1, 0);
-            } else {
-                likedIds.push(id);
-                target.supportCount = Number(target.supportCount || 0) + 1;
-            }
-
-            saveAnonymousDiscussions(discussions);
-            saveLikedDiscussionIds(likedIds);
-            renderAnonymousDiscussions();
-        }
-
-        function formatDiscussionTime(isoString) {
-            const date = new Date(isoString);
-            if (Number.isNaN(date.getTime())) return "";
-            return date.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-TW', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-        }
-
-        function escapeHTML(value) {
-            return String(value)
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
-        }
-
-        function renderAnonymousDiscussions() {
-            const list = document.getElementById('discussionList');
-            const count = document.getElementById('discussionCount');
-            if (!list || !count) return;
-
-            const t = I18N[currentLang];
-            const discussions = getAnonymousDiscussions();
-            const visibleDiscussions = activeDiscussionFilter === "all"
-                ? discussions
-                : discussions.filter(item => item.category === activeDiscussionFilter);
-
-            count.textContent = visibleDiscussions.length;
-
-            if (discussions.length === 0) {
-                list.innerHTML = `<div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-slate-400">${t.discussionEmpty}</div>`;
-                return;
-            }
-
-            if (visibleDiscussions.length === 0) {
-                list.innerHTML = `<div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-slate-400">${t.discussionFilteredEmpty}</div>`;
-                return;
-            }
-
-            list.innerHTML = visibleDiscussions.map(item => `
-                <article class="bg-white/5 border border-white/10 rounded-2xl p-5">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="px-3 py-1 bg-indigo-500/20 text-indigo-100 rounded-full text-xs font-black">${getDiscussionCategoryLabel(item.category)}</span>
-                            <span class="text-slate-400 text-xs">${escapeHTML(item.nickname || t.discussionAnonymous)}・${formatDiscussionTime(item.createdAt)}</span>
-                        </div>
-                        <button onclick="supportAnonymousDiscussion('${item.id}')" class="text-xs px-3 py-1 rounded-full font-bold transition ${isDiscussionLiked(item.id) ? 'bg-indigo-500 text-white' : 'bg-white/10 hover:bg-white/20 text-slate-200'}">
-                            👍 ${t.discussionSupport} ${Number(item.supportCount || 0)}
-                        </button>
-                    </div>
-                    <h4 class="text-xl font-black text-white mb-3">${escapeHTML(item.title)}</h4>
-                    <p class="text-slate-300 leading-relaxed whitespace-pre-line">${escapeHTML(item.content)}</p>
-                </article>
-            `).join('');
-        }
-
-
         function getIndustryAdviceZh(industry) {
             if (industry.includes("出版影音") || industry.includes("資通訊")) {
                 return "資通訊相關產業重視作品集與技術能力，建議整理專案成果、系統截圖、GitHub 或作品展示，讓薪資談判更有證據。";
@@ -1562,7 +1378,175 @@ function generateSolutions(gender, edu) {
         }
         
     </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://tcyzujkmjnnmgktkozdy.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_q5FbNzid-UFu3wAXyJqG1w_nx6bKNqO";
+
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+<script>
+
+function getReportBenefitLabel(key) {
+  return I18N[currentLang].reportBenefits[key] || key;
+}
+
+function formatReportTime(isoString) {
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-TW', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+}
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+async function submitAnonymousReport() {
+  const t = I18N[currentLang];
+
+  const company = document.getElementById('reportCompany').value.trim().slice(0, 40);
+  const jobTitle = document.getElementById('reportJobTitle').value.trim().slice(0, 40);
+  const salary = Number(document.getElementById('reportSalary').value);
+  const selectedBenefits = Array.from(document.querySelectorAll('input[name="reportBenefit"]:checked'))
+    .map(input => getReportBenefitLabel(input.value));
+
+  const benefitDetails = document.getElementById('reportBenefitDetail').value.trim().slice(0, 300);
+  const privacyChecked = document.getElementById('reportPrivacyCheck').checked;
+
+  if (!company) {
+    alert(t.reportNeedCompany);
+    return;
+  }
+
+  if (!jobTitle) {
+    alert(t.reportNeedJob);
+    return;
+  }
+
+  if (!salary || salary <= 0) {
+    alert(t.reportNeedSalary);
+    return;
+  }
+
+  if (!privacyChecked) {
+    alert(t.reportNeedPrivacy);
+    return;
+  }
+
+  const benefitsText = [
+    selectedBenefits.length ? `福利項目：${selectedBenefits.join("、")}` : "福利項目：未勾選",
+    benefitDetails ? `詳細資訊：${benefitDetails}` : ""
+  ].filter(Boolean).join("\n");
+
+  const { error } = await db
+    .from("salary_reports")
+    .insert({
+      company_name: company,
+      position: jobTitle,
+      salary: Math.round(salary),
+      salary_type: "月薪",
+      benefits: benefitsText
+    });
+
+  if (error) {
+    console.error(error);
+    alert("送出失敗，請打開 Console 查看錯誤");
+    return;
+  }
+
+  document.getElementById('reportCompany').value = "";
+  document.getElementById('reportJobTitle').value = "";
+  document.getElementById('reportSalary').value = "";
+  document.getElementById('reportBenefitDetail').value = "";
+  document.getElementById('reportPrivacyCheck').checked = false;
+  document.querySelectorAll('input[name="reportBenefit"]:checked').forEach(input => input.checked = false);
+
+  await renderAnonymousReports();
+
+  alert(t.reportSuccess);
+}
+async function renderAnonymousReports() {
+  const statsBox = document.getElementById('reportStats');
+  const list = document.getElementById('reportList');
+  const count = document.getElementById('reportCount');
+
+  if (!statsBox || !list || !count) return;
+
+  const t = I18N[currentLang];
+
+  const { data, error } = await db
+    .from("salary_reports")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    statsBox.innerHTML = `
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 md:col-span-2 text-red-300">
+        讀取 Supabase 資料失敗，請查看 Console。
+      </div>
+    `;
+    return;
+  }
+
+  const reports = data || [];
+  count.textContent = reports.length;
+
+  if (reports.length === 0) {
+    statsBox.innerHTML = `
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 md:col-span-2 text-slate-400">
+        ${t.reportEmpty}
+      </div>
+    `;
+    list.innerHTML = "";
+    return;
+  }
+
+  const avgSalary = Math.round(
+    reports.reduce((sum, item) => sum + Number(item.salary || 0), 0) / reports.length
+  );
+
+  statsBox.innerHTML = `
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+      <p class="text-slate-400 text-sm mb-2">${t.reportAvgSalary}</p>
+      <p class="text-3xl font-black">NT$${avgSalary.toLocaleString()}</p>
+    </div>
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+      <p class="text-slate-400 text-sm mb-2">${t.reportTopBenefit}</p>
+      <p class="text-xl font-black">請查看各筆福利內容</p>
+    </div>
+  `;
+
+  list.innerHTML = reports.slice(0, 8).map(item => {
+    return `
+      <article class="bg-white/5 border border-white/10 rounded-2xl p-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
+          <h4 class="text-xl font-black text-white">${escapeHTML(item.company_name)}</h4>
+          <span class="text-slate-400 text-xs">${formatReportTime(item.created_at)}</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-300">
+          <p><span class="text-slate-500">${t.reportJob}：</span>${escapeHTML(item.position)}</p>
+          <p><span class="text-slate-500">${t.reportSalary}：</span>NT$${Number(item.salary || 0).toLocaleString()}</p>
+          <p class="md:col-span-2 whitespace-pre-line">
+            <span class="text-slate-500">${t.reportBenefitTitle}：</span>${escapeHTML(item.benefits || "未填寫")}
+          </p>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+renderAnonymousReports();
+</script>
 </body>
 </html>
-
-
