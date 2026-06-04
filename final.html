@@ -7,330 +7,671 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-        :root { --primary: #4f46e5; --secondary: #ec4899; }
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
-        .hero-gradient { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
-        .card-shadow { box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05); }
-        .animate-fade { animation: fadeIn 0.8s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .solution-card { transition: all 0.3s ease; }
-        .solution-card:hover { transform: translateY(-3px); }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+        :root {
+            --ink: #101010;
+            --muted: #6b7280;
+            --paper: #f5f1e8;
+            --green: #006b5f;
+            --green-dark: #003d35;
+            --lime: #d6ff58;
+            --line: rgba(16,16,16,.14);
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 112px; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background:
+                radial-gradient(circle at 8% 0%, rgba(214,255,88,.25), transparent 32rem),
+                radial-gradient(circle at 100% 20%, rgba(0,107,95,.13), transparent 34rem),
+                linear-gradient(180deg, #f5f1e8 0%, #fbf7ed 42%, #edf7f3 100%);
+            color: var(--ink);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: .27;
+            background-image:
+                linear-gradient(rgba(16,16,16,.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16,16,16,.055) 1px, transparent 1px);
+            background-size: 38px 38px;
+        }
+
+        .case-nav {
+            background: rgba(245,241,232,.83);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            background: #101010;
+            color: var(--lime);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+        }
+
+        .case-link {
+            color: rgba(16,16,16,.62);
+            font-weight: 800;
+            transition: .2s ease;
+        }
+
+        .case-link:hover { color: var(--green); }
+
+        .lang-shell {
+            background: rgba(255,255,255,.65);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 4px;
+        }
+
+        .glass { background: rgba(255,255,255,.72); backdrop-filter: blur(14px); }
+        .hero-gradient { background: transparent; }
+        .card-shadow { box-shadow: 0 24px 70px rgba(16,16,16,.08); }
+        .animate-fade { animation: fadeIn .8s ease-out both; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .case-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .6rem 1rem;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255,255,255,.58);
+            font-size: .8rem;
+            font-weight: 900;
+            letter-spacing: .08em;
+            color: var(--green-dark);
+        }
+
+        .case-eyebrow::before {
+            content: "";
+            width: .55rem;
+            height: .55rem;
+            border-radius: 999px;
+            background: var(--lime);
+            box-shadow: 0 0 0 5px rgba(214,255,88,.35);
+        }
+
+        .hero-title {
+            font-size: clamp(3.2rem, 8vw, 8.2rem);
+            line-height: .98;
+            letter-spacing: -.055em;
+            font-weight: 900;
+        }
+
+        .hero-title .title-line {
+            display: block;
+        }
+
+        .hero-title .title-line + .title-line {
+            margin-top: .08em;
+        }
+
+        .hero-title .title-accent {
+            display: inline-block;
+            color: var(--green);
+        }
+
+        .hero-panel {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.62);
+            box-shadow: 0 30px 80px rgba(16,16,16,.08);
+        }
+
+        .project-visual {
+            position: relative;
+            min-height: 440px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.18);
+            background:
+                linear-gradient(135deg, var(--green-dark) 0%, var(--green) 58%, #1b1b1b 100%);
+        }
+
+        .project-visual::before {
+            content: "EQUAL PAY";
+            position: absolute;
+            left: -1.5rem;
+            top: 2rem;
+            font-weight: 900;
+            letter-spacing: -.08em;
+            font-size: clamp(4rem, 10vw, 10rem);
+            color: rgba(255,255,255,.08);
+            white-space: nowrap;
+        }
+
+        .project-visual::after {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            right: -160px;
+            bottom: -190px;
+            border-radius: 999px;
+            background: var(--lime);
+            opacity: .92;
+        }
+
+        .floating-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255,255,255,.88);
+            border: 1px solid rgba(255,255,255,.5);
+            box-shadow: 0 28px 70px rgba(0,0,0,.18);
+        }
+
+        .section-label {
+            color: var(--green);
+            font-size: .78rem;
+            font-weight: 900;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 5.4rem);
+            line-height: .95;
+            letter-spacing: -.065em;
+            font-weight: 900;
+        }
+
+        .case-block {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.72);
+            box-shadow: 0 22px 60px rgba(16,16,16,.06);
+        }
+
+        .dark-block {
+            color: white;
+            border: 1px solid rgba(255,255,255,.12);
+            background:
+                radial-gradient(circle at 100% 0%, rgba(214,255,88,.22), transparent 26rem),
+                linear-gradient(135deg, #101010 0%, var(--green-dark) 100%);
+            box-shadow: 0 30px 90px rgba(0,61,53,.28);
+        }
+
+        .field {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.82);
+            border-radius: 1.35rem;
+            padding: 1rem 1.1rem;
+            color: var(--ink);
+            outline: none;
+            transition: .2s ease;
+        }
+
+        .field:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 4px rgba(0,107,95,.10);
+        }
+
+        .dark-field {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,.18);
+            background: rgba(255,255,255,.09);
+            border-radius: 1.35rem;
+            padding: 1rem 1.1rem;
+            color: white;
+            outline: none;
+            transition: .2s ease;
+        }
+
+        .dark-field:focus {
+            border-color: rgba(214,255,88,.75);
+            box-shadow: 0 0 0 4px rgba(214,255,88,.12);
+        }
+
+        .dark-field::placeholder { color: rgba(255,255,255,.42); }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 1rem 1.6rem;
+            font-weight: 900;
+            color: #101010;
+            background: var(--lime);
+            box-shadow: 0 18px 34px rgba(214,255,88,.22);
+            transition: .18s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(.98);
+        }
+
+        .btn-dark {
+            border-radius: 999px;
+            padding: 1rem 1.6rem;
+            font-weight: 900;
+            color: white;
+            background: var(--green);
+            transition: .18s ease;
+        }
+
+        .btn-dark:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+        .solution-card {
+            transition: .22s ease;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,.78);
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 46px rgba(0,107,95,.12);
+        }
+
+        #reportStats .bg-white\/5,
+        #reportList article {
+            background: rgba(255,255,255,.08) !important;
+            border: 1px solid rgba(255,255,255,.13) !important;
+        }
+
+        footer {
+            background: #101010;
+            color: rgba(255,255,255,.64);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(3rem, 14vw, 5rem);
+                line-height: 1.02;
+                letter-spacing: -.045em;
+            }
+            .project-visual { min-height: 360px; }
+        }
     </style>
 </head>
-<body class="text-slate-800">
 
-    <!-- 導覽列 -->
-    <nav class="glass sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">＝</div>
-                <span class="text-2xl font-black text-slate-900 tracking-tight">EqualPay</span>
-            </div>
-            <div class="hidden md:flex gap-8 items-center">
-                <a href="#stats" class="text-slate-500 hover:text-indigo-600 font-bold transition">趨勢分析</a>
-                <a href="#compare" class="text-slate-500 hover:text-indigo-600 font-bold transition">薪資診斷</a>
-                <a href="#report" class="text-slate-500 hover:text-indigo-600 font-bold transition">匿名回報</a>
-                <a href="#game" class="text-slate-500 hover:text-indigo-600 font-bold transition">知識小挑戰</a>
-                <div class="flex items-center gap-2 bg-slate-100 rounded-full p-1 text-xs font-bold">
-                    <button onclick="setLanguage('zh')" id="lang-zh" class="px-3 py-1 rounded-full bg-indigo-600 text-white transition">中文</button>
-                    <button onclick="setLanguage('en')" id="lang-en" class="px-3 py-1 rounded-full text-slate-600 hover:text-indigo-600 transition">EN</button>
+<body>
+    <nav class="case-nav sticky top-0 z-50">
+        <div class="max-w-[1500px] mx-auto px-6 md:px-10 h-24 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="brand-mark">＝</div>
+                <div>
+                    <div class="text-2xl font-black tracking-tight">EqualPay</div>
+                    <div class="text-[11px] uppercase tracking-[.22em] text-slate-500 font-black">Salary equity project</div>
                 </div>
-                <div class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-100" id="dataStatus">
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="#stats" class="case-link">趨勢分析</a>
+                <a href="#compare" class="case-link">薪資診斷</a>
+                <a href="#report" class="case-link">匿名回報</a>
+                <a href="#game" class="case-link">知識小挑戰</a>
+                <div class="lang-shell flex items-center gap-1 text-xs font-black">
+                    <button onclick="setLanguage('zh')" id="lang-zh" class="px-4 py-2 rounded-full bg-black text-white transition">中文</button>
+                    <button onclick="setLanguage('en')" id="lang-en" class="px-4 py-2 rounded-full text-slate-600 hover:text-black transition">EN</button>
+                </div>
+                <div class="hidden xl:flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-black/10 text-emerald-700 text-xs font-black" id="dataStatus">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                     已自動載入 110-113 年官方完整數據
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- 主視覺 -->
-    <header class="hero-gradient text-white py-24 px-6 text-center relative overflow-hidden">
-        <div class="max-w-5xl mx-auto relative z-10 animate-fade">
-            <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-sm font-bold mb-6 tracking-wider">SDG 10：減少職場不平等</span>
-            <h1 class="text-5xl md:text-7xl font-black mb-8 leading-tight">數據驅動，<br>零門檻看見公平</h1>
-            <p class="text-indigo-50 text-xl max-w-2xl mx-auto opacity-90 leading-relaxed mb-12">
-                無需上傳任何檔案。本系統已內建主計總處 110-113 年所有統計數據，點擊即可獲得精準的薪資診斷與行動建議。
-            </p>
+    <header class="hero-gradient px-6 md:px-10 pt-20 pb-10">
+        <div class="max-w-5xl mx-auto animate-fade">
+            <span class="case-eyebrow">SDG 10：減少職場不平等</span>
+            <div class="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-12 mt-12 items-end">
+                <div>
+                    <h1 class="hero-title text-black">
+                        <span class="title-line">數據驅動</span>
+                        <span class="title-line"><span class="title-accent">零門檻</span>看見公平</span>
+                    </h1>
+                    <p class="max-w-2xl mt-8 text-lg md:text-xl leading-loose text-slate-700">
+                        無需上傳任何檔案。本系統已內建主計總處 110-113 年所有統計數據，點擊即可獲得精準的薪資診斷與行動建議。
+                    </p>
+                </div>
+                <div class="hero-panel rounded-[2rem] p-7">
+                    <p class="section-label mb-5">PROJECT INFO</p>
+                    <div class="space-y-5 text-sm">
+                        <div class="flex justify-between border-b border-black/10 pb-3">
+                            <span class="text-slate-500 font-bold">Category</span>
+                            <span class="font-black">SDG / Data</span>
+                        </div>
+                        <div class="flex justify-between border-b border-black/10 pb-3">
+                            <span class="text-slate-500 font-bold">Feature</span>
+                            <span class="font-black">Diagnosis</span>
+                        </div>
+                        <div class="flex justify-between border-b border-black/10 pb-3">
+                            <span class="text-slate-500 font-bold">Database</span>
+                            <span class="font-black">Supabase</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500 font-bold">Year</span>
+                            <span class="font-black">2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-[1500px] mx-auto mt-16">
+            <div class="project-visual rounded-[3rem] p-8 md:p-12">
+                <div class="floating-card max-w-md rounded-[2rem] p-7">
+                    <div class="text-sm font-black text-emerald-800 mb-3">EQUALPAY SYSTEM</div>
+                    <div class="text-5xl font-black tracking-tighter text-black">100%</div>
+                    <p class="mt-3 text-slate-600 font-bold">薪資公平診斷、匿名回報、知識小挑戰整合平台</p>
+                </div>
+                <div class="floating-card mt-8 ml-auto max-w-lg rounded-[2rem] p-7">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-3xl font-black text-emerald-800">4</div>
+                            <div class="text-xs font-black text-slate-500 mt-1">YEARS</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-black text-emerald-800">18+</div>
+                            <div class="text-xs font-black text-slate-500 mt-1">INDUSTRIES</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-black text-emerald-800">SDG10</div>
+                            <div class="text-xs font-black text-slate-500 mt-1">GOAL</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 -mt-12 relative z-20 pb-24">
-        
-        <!-- 歷史數據趨勢 -->
-        <section id="stats" class="mb-16">
+    <main class="max-w-[1500px] mx-auto px-6 md:px-10 py-20">
+        <section id="stats" class="mb-24">
+            <div class="grid grid-cols-1 xl:grid-cols-[420px_1fr] gap-10 items-start mb-10">
+                <div>
+                    <p class="section-label">Data visual</p>
+                    <h2 class="section-title mt-4">薪資落差<br>趨勢視覺化</h2>
+                </div>
+                <p class="text-xl leading-relaxed text-slate-600 max-w-3xl xl:pt-8">
+                    以官方統計資料作為基準，將性別薪資差距與年齡薪資中位數轉化為更容易理解的圖表。
+                </p>
+            </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-100">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                        <span class="w-2 h-6 bg-indigo-600 rounded-full"></span>
+                <div class="case-block rounded-[2.5rem] p-8">
+                    <h3 class="text-2xl font-black text-black mb-6 flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full bg-emerald-700"></span>
                         110-113 全國性別薪資落差趨勢
                     </h3>
-                    <div class="h-[300px]"><canvas id="historyTrendChart"></canvas></div>
-                    <p class="text-xs text-slate-400 mt-4 italic">※ 自動分析：全國性別薪資差距從 14.1% 逐步縮減至 12.5%。</p>
+                    <div class="h-[320px]"><canvas id="historyTrendChart"></canvas></div>
+                    <p class="text-sm text-slate-500 mt-5">※ 自動分析：全國性別薪資差距從 14.1% 逐步縮減至 12.5%。</p>
                 </div>
-                <div class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-100">
-                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                        <span class="w-2 h-6 bg-pink-600 rounded-full"></span>
+
+                <div class="case-block rounded-[2.5rem] p-8">
+                    <h3 class="text-2xl font-black text-black mb-6 flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full bg-lime-400"></span>
                         113年全產業年齡別薪資中位數
                     </h3>
-                    <div class="h-[300px]"><canvas id="ageChart"></canvas></div>
-                    <p class="text-xs text-slate-400 mt-4 italic">※ 發現：薪資隨年齡顯著增長，並在 40-49 歲達到高峰。</p>
+                    <div class="h-[320px]"><canvas id="ageChart"></canvas></div>
+                    <p class="text-sm text-slate-500 mt-5">※ 發現：薪資隨年齡顯著增長，並在 40-49 歲達到高峰。</p>
                 </div>
             </div>
         </section>
 
-        <!-- 智慧薪資診斷器 -->
-        <section id="compare">
-            <div class="bg-slate-900 rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
-                <div class="max-w-4xl mx-auto relative z-10">
-                    <div class="text-center mb-12">
-                        <h2 class="text-4xl font-black mb-4 tracking-tight">即時薪資公平性診斷</h2>
-                        <p class="text-slate-400 text-lg">免讀檔分析：自動連動 8 份年度官方報表進行交叉比對</p>
+        <section id="compare" class="mb-24">
+            <div class="dark-block rounded-[3rem] p-8 md:p-12 lg:p-16">
+                <div class="grid grid-cols-1 xl:grid-cols-[390px_1fr] gap-12">
+                    <div class="text-center xl:text-left">
+                        <p class="section-label text-lime-300">Diagnosis</p>
+                        <h2 class="text-5xl md:text-6xl font-black tracking-[-.06em] leading-none mt-4">即時薪資公平性診斷</h2>
+                        <p class="text-white/62 text-lg leading-relaxed mt-6">免讀檔分析：自動連動 8 份年度官方報表進行交叉比對</p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-slate-400 ml-1">年份 (自動匹配報表)</label>
-                            <select id="userYear" class="w-full bg-white/10 border border-white/20 p-4 rounded-2xl text-white outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                <option class="text-slate-900">113年</option>
-                                <option class="text-slate-900">112年</option>
-                                <option class="text-slate-900">111年</option>
-                                <option class="text-slate-900">110年</option>
-                            </select>
+                    <div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-white/60">年份 (自動匹配報表)</label>
+                                <select id="userYear" class="dark-field">
+                                    <option class="text-slate-900">113年</option>
+                                    <option class="text-slate-900">112年</option>
+                                    <option class="text-slate-900">111年</option>
+                                    <option class="text-slate-900">110年</option>
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-white/60">最高教育程度</label>
+                                <select id="userEdu" class="dark-field">
+                                    <option class="text-slate-900">研究所</option>
+                                    <option class="text-slate-900">專科及大學</option>
+                                    <option class="text-slate-900">高中</option>
+                                    <option class="text-slate-900">國中及以下</option>
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-white/60">年齡層分組</label>
+                                <select id="userAge" class="dark-field">
+                                    <option class="text-slate-900">未滿25歲</option>
+                                    <option class="text-slate-900">25-29歲</option>
+                                    <option class="text-slate-900">30-39歲</option>
+                                    <option class="text-slate-900">40-49歲</option>
+                                    <option class="text-slate-900">50-64歲</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2 space-y-3">
+                                <label class="text-sm font-black text-white/60">您的行業別 (全分類)</label>
+                                <select id="userIndustry" class="dark-field">
+
+                                    <option class="text-slate-900">全體</option>
+                                    <option class="text-slate-900">工業</option>
+                                    <option class="text-slate-900">製造業</option>
+                                    <option class="text-slate-900">電力及燃氣供應業</option>
+                                    <option class="text-slate-900">用水供應及污染整治業</option>
+                                    <option class="text-slate-900">營建工程業</option>
+                                    <option class="text-slate-900">服務業</option>
+                                    <option class="text-slate-900">批發及零售業</option>
+                                    <option class="text-slate-900">運輸及倉儲業</option>
+                                    <option class="text-slate-900">住宿及餐飲業</option>
+                                    <option class="text-slate-900">出版影音及資通訊業</option>
+                                    <option class="text-slate-900">金融及保險業</option>
+                                    <option class="text-slate-900">不動產業</option>
+                                    <option class="text-slate-900">專業科學及技術服務業</option>
+                                    <option class="text-slate-900">支援服務業</option>
+                                    <option class="text-slate-900">教育業</option>
+                                    <option class="text-slate-900">醫療保健及社會工作服務業</option>
+                                    <option class="text-slate-900">藝術娛樂及休閒服務業</option>
+                                    <option class="text-slate-900">其他服務業</option>
+
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-white/60">月薪 (TWD)</label>
+                                <input type="number" id="userSalary" placeholder="如：55000" class="dark-field">
+                            </div>
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-slate-400 ml-1">最高教育程度</label>
-                            <select id="userEdu" class="w-full bg-white/10 border border-white/20 p-4 rounded-2xl text-white outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                <option class="text-slate-900">研究所</option>
-                                <option class="text-slate-900">專科及大學</option>
-                                <option class="text-slate-900">高中</option>
-                                <option class="text-slate-900">國中及以下</option>
-                            </select>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+                            <div class="flex gap-3">
+                                <button onclick="setGender('male')" id="btn-male" class="px-8 py-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition font-black">男性</button>
+                                <button onclick="setGender('female')" id="btn-female" class="px-8 py-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition font-black">女性</button>
+                            </div>
+                            <button onclick="calculateParity()" class="btn-primary text-lg">
+                                產出公平性診斷報告
+                            </button>
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-slate-400 ml-1">年齡層分組</label>
-                            <select id="userAge" class="w-full bg-white/10 border border-white/20 p-4 rounded-2xl text-white outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                <option class="text-slate-900">未滿25歲</option>
-                                <option class="text-slate-900">25-29歲</option>
-                                <option class="text-slate-900">30-39歲</option>
-                                <option class="text-slate-900">40-49歲</option>
-                                <option class="text-slate-900">50-64歲</option>
-                            </select>
+                    </div>
+                </div>
+
+                <div id="resultBox" class="hidden animate-fade bg-[#f5f1e8] text-black p-8 md:p-12 rounded-[2.5rem] mt-12">
+                    <div class="flex flex-col md:flex-row items-center gap-12 mb-12">
+                        <div class="relative w-40 h-40 shrink-0">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="text-black/10" />
+                                <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" stroke-dasharray="439.8" stroke-dashoffset="439.8" class="text-emerald-700 transition-all duration-1000" id="scoreCircle" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-4xl font-black" id="resultScore">--</div>
                         </div>
-                        <div class="md:col-span-2 space-y-3">
-                            <label class="text-sm font-bold text-slate-400 ml-1">您的行業別 (全分類)</label>
-                            <select id="userIndustry" class="w-full bg-white/10 border border-white/20 p-4 rounded-2xl text-white outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                <option class="text-slate-900">全體</option>
-                                <option class="text-slate-900">工業</option>
-                                <option class="text-slate-900">製造業</option>
-                                <option class="text-slate-900">電力及燃氣供應業</option>
-                                <option class="text-slate-900">用水供應及污染整治業</option>
-                                <option class="text-slate-900">營建工程業</option>
-                                <option class="text-slate-900">服務業</option>
-                                <option class="text-slate-900">批發及零售業</option>
-                                <option class="text-slate-900">運輸及倉儲業</option>
-                                <option class="text-slate-900">住宿及餐飲業</option>
-                                <option class="text-slate-900">出版影音及資通訊業</option>
-                                <option class="text-slate-900">金融及保險業</option>
-                                <option class="text-slate-900">不動產業</option>
-                                <option class="text-slate-900">專業科學及技術服務業</option>
-                                <option class="text-slate-900">支援服務業</option>
-                                <option class="text-slate-900">教育業</option>
-                                <option class="text-slate-900">醫療保健及社會工作服務業</option>
-                                <option class="text-slate-900">藝術娛樂及休閒服務業</option>
-                                <option class="text-slate-900">其他服務業</option>
-                            </select>
-                        </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-slate-400 ml-1">月薪 (TWD)</label>
-                            <input type="number" id="userSalary" placeholder="如：55000" class="w-full bg-white/10 border border-white/20 p-4 rounded-2xl text-white outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        <div class="flex-1 text-center md:text-left">
+                            <div class="inline-block px-4 py-2 bg-white border border-black/10 text-emerald-800 rounded-full text-xs font-black mb-4 uppercase tracking-widest" id="resTag">Result</div>
+                            <h4 class="text-4xl font-black mb-4 text-black" id="resultTitle">診斷中</h4>
+                            <div class="text-slate-700 text-lg leading-relaxed space-y-4" id="resultText"></div>
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
-                        <div class="flex gap-4">
-                            <button onclick="setGender('male')" id="btn-male" class="px-10 py-4 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition font-bold">男性</button>
-                            <button onclick="setGender('female')" id="btn-female" class="px-10 py-4 rounded-2xl border border-white/20 bg-white/5 hover:bg-white/10 transition font-bold">女性</button>
-                        </div>
-                        <button onclick="calculateParity()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-16 py-4 rounded-2xl font-black text-lg shadow-xl shadow-indigo-500/30 transition-all active:scale-95">
-                            產出公平性診斷報告
+                    <div id="smartAdviceSection" class="border-t border-black/10 pt-10 mb-10">
+                        <h5 class="text-2xl font-black mb-4 flex items-center gap-3 text-black" id="smartAdviceTitle">
+                            <span class="w-9 h-9 bg-lime-300 text-black rounded-full flex items-center justify-center text-sm">◆</span>
+                            診斷建議
+                        </h5>
+                        <p class="text-sm text-slate-600 mb-5 leading-relaxed" id="smartAdviceDesc">
+                            本系統會依據您的診斷結果，自動產生個人化薪資糾紛解決三步驟。
+                        </p>
+                        <button onclick="generateSmartAdvice()" id="smartAdviceBtn" class="btn-dark">
+                            產生診斷建議
                         </button>
+                        <div id="smartAdviceOutput" class="hidden mt-6 bg-white border border-black/10 rounded-[2rem] p-6 text-slate-700 leading-relaxed"></div>
                     </div>
 
-                    <!-- 結果展示 -->
-                    <div id="resultBox" class="hidden animate-fade bg-white text-slate-900 p-8 md:p-12 rounded-[3rem] shadow-2xl">
-                        <div class="flex flex-col md:flex-row items-center gap-12 mb-12">
-                            <div class="relative w-40 h-40 shrink-0">
-                                <svg class="w-full h-full transform -rotate-90">
-                                    <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="text-slate-100" />
-                                    <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" stroke-dasharray="439.8" stroke-dashoffset="439.8" class="text-indigo-600 transition-all duration-1000" id="scoreCircle" />
-                                </svg>
-                                <div class="absolute inset-0 flex items-center justify-center text-4xl font-black" id="resultScore">--</div>
-                            </div>
-                            <div class="flex-1 text-center md:text-left">
-                                <div class="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-black mb-4 uppercase tracking-widest" id="resTag">Result</div>
-                                <h4 class="text-3xl font-black mb-4 text-slate-900" id="resultTitle">診斷中</h4>
-                                <div class="text-slate-600 text-lg leading-relaxed space-y-4" id="resultText"></div>
-                            </div>
-                        </div>
-
-                        <!-- 規則式 診斷建議區塊 -->
-                        <div id="smartAdviceSection" class="border-t border-slate-100 pt-10 mb-10">
-                            <h5 class="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-900" id="smartAdviceTitle">
-                                <span class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm">🤖</span>
-                                診斷建議
-                            </h5>
-                            <p class="text-sm text-slate-500 mb-5 leading-relaxed" id="smartAdviceDesc">
-                                本系統會依據您的診斷結果，自動產生個人化薪資糾紛解決三步驟。
-                            </p>
-                            <button onclick="generateSmartAdvice()" id="smartAdviceBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
-                                產生診斷建議
-                            </button>
-                            <div id="smartAdviceOutput" class="hidden mt-6 bg-slate-50 border border-slate-100 rounded-2xl p-6 text-slate-700 leading-relaxed"></div>
-                        </div>
-
-                        <!-- 解決方案區塊 -->
-                        <div id="solutionSection" class="hidden border-t border-slate-100 pt-10">
-                            <h5 class="text-xl font-bold mb-6 flex items-center gap-2 text-indigo-900">
-                                <span class="w-8 h-8 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center text-sm">💡</span>
-                                改善方案與行動建議
-                            </h5>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="solutionGrid"></div>
-                        </div>
+                    <div id="solutionSection" class="hidden border-t border-black/10 pt-10">
+                        <h5 class="text-2xl font-black mb-6 flex items-center gap-3 text-black">
+                            <span class="w-9 h-9 bg-lime-300 text-black rounded-full flex items-center justify-center text-sm">!</span>
+                            改善方案與行動建議
+                        </h5>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="solutionGrid"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 匿名回報功能 -->
-        <section id="report" class="mt-16">
-            <div class="bg-white rounded-[3rem] p-10 md:p-16 card-shadow border border-slate-100">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-10">
-                        <span id="reportEyebrow" class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm font-black mb-4">匿名資料共創</span>
-                        <h2 id="reportTitle" class="text-4xl font-black mb-4 tracking-tight text-slate-900">匿名回報公司福利與薪資</h2>
-                        <p id="reportDesc" class="text-slate-500 text-lg leading-relaxed">
-                            使用者可匿名提交真實公司的福利與薪資資訊。系統不收集姓名、Email、電話或員工編號，資料會儲存在 Supabase 雲端資料庫，供所有使用者共同查看。
-                        </p>
-                    </div>
+        <section id="report" class="mb-24">
+            <div class="grid grid-cols-1 xl:grid-cols-[420px_1fr] gap-10 items-start mb-10">
+                <div>
+                    <span id="reportEyebrow" class="case-eyebrow">匿名資料共創</span>
+                    <h2 id="reportTitle" class="section-title mt-6">匿名回報公司福利與薪資</h2>
+                </div>
+                <p id="reportDesc" class="text-xl leading-relaxed text-slate-600 max-w-3xl xl:pt-14">
+                    使用者可匿名提交真實公司的福利與薪資資訊。系統不收集姓名、Email、電話或員工編號，資料會儲存在 Supabase 雲端資料庫，供所有使用者共同查看。
+                </p>
+            </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8">
-                        <div class="bg-slate-50 rounded-[2rem] p-8 border border-slate-100">
-                            <h3 id="reportFormTitle" class="text-2xl font-black text-slate-900 mb-6">提交匿名回報</h3>
+            <div class="grid grid-cols-1 xl:grid-cols-[.92fr_1.08fr] gap-8">
+                <div class="case-block rounded-[2.5rem] p-8 md:p-10">
+                    <h3 id="reportFormTitle" class="text-3xl font-black mb-8">提交匿名回報</h3>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                                <div class="space-y-2">
-                                    <label id="reportCompanyLabel" class="text-sm font-bold text-slate-600">公司名稱</label>
-                                    <input type="text" id="reportCompany" maxlength="40" placeholder="例：ABC科技" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                </div>
-                                <div class="space-y-2">
-                                    <label id="reportJobLabel" class="text-sm font-bold text-slate-600">職位</label>
-                                    <input type="text" id="reportJobTitle" maxlength="40" placeholder="例：前端工程師" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                </div>
-                                <div class="space-y-2 md:col-span-2">
-                                    <label id="reportSalaryLabel" class="text-sm font-bold text-slate-600">月薪 TWD</label>
-                                    <input type="number" id="reportSalary" min="1" placeholder="例：52000" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <p id="reportBenefitTitle" class="text-sm font-bold text-slate-600 mb-3">福利</p>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600">
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="bonus" class="accent-indigo-600"><span id="reportBenefitBonus">年終 / 獎金</span></label>
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="insurance" class="accent-indigo-600"><span id="reportBenefitInsurance">保險 / 勞健保</span></label>
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="remote" class="accent-indigo-600"><span id="reportBenefitRemote">遠端 / 彈性工時</span></label>
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="training" class="accent-indigo-600"><span id="reportBenefitTraining">教育訓練補助</span></label>
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="meal" class="accent-indigo-600"><span id="reportBenefitMeal">餐費 / 交通補助</span></label>
-                                    <label class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl p-3"><input type="checkbox" name="reportBenefit" value="leave" class="accent-indigo-600"><span id="reportBenefitLeave">優於法規休假</span></label>
-                                </div>
-                            </div>
-
-                            <div class="space-y-2 mb-6">
-                                <label id="reportBenefitDetailLabel" class="text-sm font-bold text-slate-600">福利詳細資訊</label>
-                                <textarea id="reportBenefitDetail" rows="4" maxlength="300" placeholder="例：年終約 2 個月、每月交通補助 1200 元、每週可遠端 2 天" class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-slate-800 outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none"></textarea>
-                            </div>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-sm text-amber-700 mb-5" id="reportPrivacyNotice">
-                                請勿填寫姓名、Email、電話、員工編號、精確部門或任何可識別個人的內容。
-                            </div>
-
-                            <label class="flex items-start gap-3 text-sm text-slate-600 mb-6">
-                                <input type="checkbox" id="reportPrivacyCheck" class="mt-1 accent-indigo-600">
-                                <span id="reportPrivacyCheckText">我確認此回報不包含可識別個人的資訊。</span>
-                            </label>
-
-                            <button onclick="submitAnonymousReport()" id="reportSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">
-                                匿名提交
-                            </button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                        <div class="space-y-2">
+                            <label id="reportCompanyLabel" class="text-sm font-black text-slate-600">公司名稱</label>
+                            <input type="text" id="reportCompany" maxlength="40" placeholder="例：ABC科技" class="field">
                         </div>
-
-                        <div class="bg-slate-900 rounded-[2rem] p-8 text-white">
-                            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                                <div>
-                                    <h3 id="reportBoardTitle" class="text-2xl font-black mb-3">匿名回報統計</h3>
-                                    <p id="reportBoardDesc" class="text-slate-400 leading-relaxed">提交後會更新此瀏覽器中的匿名薪資與福利樣本。</p>
-                                </div>
-                                <div class="bg-white/10 border border-white/10 rounded-2xl px-5 py-4 shrink-0">
-                                    <p id="reportCountLabel" class="text-slate-400 text-xs font-bold mb-1">回報數</p>
-                                    <p id="reportCount" class="text-3xl font-black">0</p>
-                                </div>
-                            </div>
-
-                            <div id="reportStats" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
-
-                            <h4 id="reportRecentTitle" class="text-xl font-black mb-4">最近匿名回報</h4>
-                            <div id="reportList" class="space-y-4 max-h-[420px] overflow-y-auto pr-1"></div>
+                        <div class="space-y-2">
+                            <label id="reportJobLabel" class="text-sm font-black text-slate-600">職位</label>
+                            <input type="text" id="reportJobTitle" maxlength="40" placeholder="例：前端工程師" class="field">
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label id="reportSalaryLabel" class="text-sm font-black text-slate-600">月薪 TWD</label>
+                            <input type="number" id="reportSalary" min="1" placeholder="例：52000" class="field">
                         </div>
                     </div>
+
+                    <div class="mb-6">
+                        <p id="reportBenefitTitle" class="text-sm font-black text-slate-600 mb-3">福利</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600">
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="bonus" class="accent-emerald-700"><span id="reportBenefitBonus">年終 / 獎金</span></label>
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="insurance" class="accent-emerald-700"><span id="reportBenefitInsurance">保險 / 勞健保</span></label>
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="remote" class="accent-emerald-700"><span id="reportBenefitRemote">遠端 / 彈性工時</span></label>
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="training" class="accent-emerald-700"><span id="reportBenefitTraining">教育訓練補助</span></label>
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="meal" class="accent-emerald-700"><span id="reportBenefitMeal">餐費 / 交通補助</span></label>
+                            <label class="flex items-center gap-2 bg-white/70 border border-black/10 rounded-2xl p-3"><input type="checkbox" name="reportBenefit" value="leave" class="accent-emerald-700"><span id="reportBenefitLeave">優於法規休假</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-6">
+                        <label id="reportBenefitDetailLabel" class="text-sm font-black text-slate-600">福利詳細資訊</label>
+                        <textarea id="reportBenefitDetail" rows="4" maxlength="300" placeholder="例：年終約 2 個月、每月交通補助 1200 元、每週可遠端 2 天" class="field resize-none"></textarea>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800 mb-5" id="reportPrivacyNotice">
+                        請勿填寫姓名、Email、電話、員工編號、精確部門或任何可識別個人的內容。
+                    </div>
+
+                    <label class="flex items-start gap-3 text-sm text-slate-600 mb-6">
+                        <input type="checkbox" id="reportPrivacyCheck" class="mt-1 accent-emerald-700">
+                        <span id="reportPrivacyCheckText">我確認此回報不包含可識別個人的資訊。</span>
+                    </label>
+
+                    <button onclick="submitAnonymousReport()" id="reportSubmitBtn" class="btn-dark w-full">
+                        匿名提交
+                    </button>
+                </div>
+
+                <div class="dark-block rounded-[2.5rem] p-8 md:p-10">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
+                        <div>
+                            <h3 id="reportBoardTitle" class="text-3xl font-black mb-3">匿名回報統計</h3>
+                            <p id="reportBoardDesc" class="text-white/55 leading-relaxed">提交後會更新此瀏覽器中的匿名薪資與福利樣本。</p>
+                        </div>
+                        <div class="bg-white/10 border border-white/10 rounded-2xl px-5 py-4 shrink-0">
+                            <p id="reportCountLabel" class="text-white/45 text-xs font-black mb-1">回報數</p>
+                            <p id="reportCount" class="text-4xl font-black">0</p>
+                        </div>
+                    </div>
+
+                    <div id="reportStats" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
+
+                    <h4 id="reportRecentTitle" class="text-2xl font-black mb-5">最近匿名回報</h4>
+                    <div id="reportList" class="space-y-4 max-h-[440px] overflow-y-auto pr-1"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 薪資公平小遊戲 -->
-        <section id="game" class="mt-16">
-            <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-[3rem] p-10 md:p-16 text-white shadow-2xl relative overflow-hidden">
-                <div class="max-w-5xl mx-auto relative z-10">
-                    <div class="text-center mb-10">
-                        <span id="gameEyebrow" class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-sm font-black mb-4">知識小挑戰</span>
-                        <h2 id="gameTitle" class="text-4xl font-black mb-4 tracking-tight">知識小挑戰</h2>
-                        <p id="gameDesc" class="text-indigo-50 text-lg leading-relaxed max-w-3xl mx-auto">
-                            透過情境選擇題，測試你是否了解薪資透明、同工同酬與職場公平。
+        <section id="game" class="mb-8">
+            <div class="dark-block rounded-[3rem] p-8 md:p-12 lg:p-16">
+                <div class="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-12 items-start">
+                    <div>
+                        <span id="gameEyebrow" class="case-eyebrow bg-white/10 text-white border-white/20">知識小挑戰</span>
+                        <h2 id="gameTitle" class="text-5xl md:text-6xl font-black tracking-[-.06em] leading-none mt-6">知識小挑戰</h2>
+                        <p id="gameDesc" class="text-white/62 text-lg leading-relaxed mt-6">
+                            透過情境選擇題，測試你是否了解不同工作類型、薪資組成與職場條件。
                         </p>
                     </div>
 
-                    <div class="bg-white text-slate-900 rounded-[2.5rem] p-8 md:p-10 shadow-2xl">
+                    <div class="bg-[#f5f1e8] text-black rounded-[2.5rem] p-8 md:p-10">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                             <div>
-                                <p id="gameProgress" class="text-sm font-black text-indigo-600 uppercase tracking-widest">Question 1 / 5</p>
+                                <p id="gameProgress" class="text-sm font-black text-emerald-700 uppercase tracking-widest">Question 1 / 5</p>
                                 <h3 id="gameQuestion" class="text-2xl md:text-3xl font-black mt-2 leading-snug">題目載入中</h3>
                             </div>
-                            <div class="bg-indigo-50 text-indigo-700 px-5 py-3 rounded-2xl font-black">
+                            <div class="bg-white border border-black/10 text-emerald-800 px-5 py-3 rounded-full font-black">
                                 <span id="gameScoreLabel">分數</span>：<span id="gameScore">0</span>
                             </div>
                         </div>
 
                         <div id="gameOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
-
                         <div id="gameFeedback" class="hidden rounded-2xl p-5 mb-6 text-sm leading-relaxed"></div>
 
                         <div class="flex flex-col md:flex-row gap-4 justify-between">
-                            <button onclick="restartFairnessGame()" id="gameRestartBtn" class="px-8 py-4 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-black transition">
+                            <button onclick="restartFairnessGame()" id="gameRestartBtn" class="px-8 py-4 rounded-full border border-black/10 text-slate-600 hover:bg-white font-black transition">
                                 重新開始
                             </button>
-                            <button onclick="nextFairnessQuestion()" id="gameNextBtn" class="px-8 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <button onclick="nextFairnessQuestion()" id="gameNextBtn" class="btn-dark disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                                 下一題
                             </button>
                         </div>
 
-                        <div id="gameResult" class="hidden mt-8 border-t border-slate-100 pt-8"></div>
+                        <div id="gameResult" class="hidden mt-8 border-t border-black/10 pt-8"></div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-slate-900 text-slate-500 py-16 px-6 text-center border-t border-white/5">
+    <footer class="py-16 px-6 md:px-10 text-center border-t border-white/5">
         <p class="mb-4">數據引用來源：勞動部與主計總處 110-113 年「各業受僱員工薪資統計表1 & 表2」</p>
         <p class="text-xs">&copy; 2024 EQUALPAY PROJECT. SDG 10 減少不平等行動實踐.</p>
     </footer>
@@ -409,7 +750,7 @@
                 reportSalary: "月薪",
                 gameEyebrow: "知識小挑戰",
                 gameTitle: "知識小挑戰",
-                gameDesc: "透過情境選擇題，測試你是否了解薪資透明、同工同酬與職場公平。",
+                gameDesc: "透過情境選擇題，測試你是否了解不同工作類型、薪資組成與職場條件。",
                 gameScoreLabel: "分數",
                 gameRestart: "重新開始",
                 gameNext: "下一題",
@@ -422,64 +763,64 @@
                 gameResultLow: "還有進步空間。建議先從了解公平基準、薪資資料蒐集與職場權益開始。",
                 gameQuestions: [
                     {
-                        question: "如果兩位員工做相同工作、責任相近，薪資評估最應該依據什麼？",
-                        options: ["性別與年齡", "工作表現、職責與市場薪資", "誰比較敢談薪", "誰比較常加班但沒有紀錄"],
-                        answer: 1,
-                        explain: "薪資公平應以職責、能力、績效與市場基準為核心，而不是性別、年齡或個人是否敢開口。"
-                    },
-                    {
-                        question: "薪資透明制度最主要能幫助什麼？",
-                        options: ["讓大家薪水完全一樣", "降低資訊不對稱與不合理差距", "禁止員工討論薪資", "讓公司不用調薪"],
-                        answer: 1,
-                        explain: "薪資透明不是讓所有人薪水相同，而是讓薪資範圍與評估標準更清楚，降低不公平差距。"
-                    },
-                    {
-                        question: "發現薪資低於市場公平基準時，第一步最適合做什麼？",
-                        options: ["立刻離職", "整理工作成果與薪資佐證資料", "在網路上公布主管名字", "完全不處理"],
-                        answer: 1,
-                        explain: "先整理成果、職責與市場資料，能讓後續談薪或轉職判斷更有根據。"
-                    },
-                    {
-                        question: "匿名回報薪資資料時，哪一項不應該填寫？",
-                        options: ["產業別", "月薪區間或月薪", "姓名、電話或員工編號", "福利項目"],
-                        answer: 2,
-                        explain: "匿名回報應避免姓名、電話、Email、員工編號等可識別個人的資訊。"
-                    },
-                    {
-                        question: "薪資診斷中的「公平基準」最適合被用來做什麼？",
-                        options: ["作為了解市場薪資與談薪準備的參考", "保證公司一定會加薪", "取代所有個人能力與績效評估", "判定某家公司一定違法"],
+                        question: "全職工作和兼職工作最主要的差異通常是什麼？",
+                        options: ["工作時數、福利與薪資計算方式可能不同", "全職一定比較輕鬆", "兼職一定沒有任何權益", "兩者薪資永遠相同"],
                         answer: 0,
-                        explain: "公平基準適合作為市場參考與談薪準備依據，但不能保證加薪，也不能單獨判定公司違法。"
+                        explain: "全職與兼職通常在工時、福利、薪資計算方式與工作穩定性上有所差異，不能只看職稱判斷。"
                     },
                     {
-                        question: "在談薪前，哪一種資料最能支持自己的訴求？",
-                        options: ["朋友隨口說的薪水", "自己的工作成果、職責變化與市場薪資資料", "只說自己生活費變高", "完全不準備直接要求加薪"],
-                        answer: 1,
-                        explain: "談薪時應以具體成果、職責範圍與市場薪資資料作為依據，較能提升溝通可信度。"
+                        question: "實習工作在評估薪資或津貼時，最應該注意什麼？",
+                        options: ["是否有明確工作內容、工時與學習目標", "只要叫實習就不用給任何報酬", "是否能無限加班", "公司名氣越大就不用看條件"],
+                        answer: 0,
+                        explain: "實習仍應確認工作內容、工時、津貼或薪資、學習目標與責任範圍，避免實習變成不合理勞動。"
                     },
                     {
-                        question: "如果公司福利很多，但薪資長期低於公平基準，最合理的判斷是什麼？",
-                        options: ["有福利就一定公平", "福利可納入考量，但仍應檢視總報酬是否合理", "福利越多薪資越低越好", "不用看薪資"],
-                        answer: 1,
-                        explain: "福利是總報酬的一部分，但不能完全取代合理薪資，仍應檢視薪資、福利與工作負荷是否平衡。"
+                        question: "約聘或契約型工作在接受前，最需要確認哪一項？",
+                        options: ["契約期間、薪資、福利與續約條件", "主管看起來親切就好", "不用簽任何文件", "只要薪水高就不用看條款"],
+                        answer: 0,
+                        explain: "契約型工作要特別確認期間、薪資、福利、工作內容、續約方式與提前終止條件。"
                     },
                     {
-                        question: "同工同酬的概念主要強調什麼？",
-                        options: ["同一家公司所有人薪資都一樣", "相同價值與責任的工作應有合理且不歧視的報酬", "年資越久一定薪水越高", "職稱一樣就不能有任何差異"],
-                        answer: 1,
-                        explain: "同工同酬重視工作價值、責任與能力的公平評價，避免因性別或其他非工作因素造成不合理差距。"
+                        question: "接案或自由工作者最容易忽略哪一種成本？",
+                        options: ["稅務、保險、設備、溝通與未接案期間成本", "午餐吃什麼", "公司制服", "固定打卡機位置"],
+                        answer: 0,
+                        explain: "接案收入不能只看單次報價，還要考慮稅務、保險、設備、溝通時間與空窗期成本。"
                     },
                     {
-                        question: "匿名薪資平台為什麼需要累積足夠樣本數才顯示統計？",
-                        options: ["讓網站看起來比較慢", "保護匿名性並降低單一資料被辨識的風險", "讓資料不能使用", "避免任何人看到平均薪資"],
-                        answer: 1,
-                        explain: "樣本數太少時容易推測出個別回報者，因此累積足夠樣本後再顯示統計能提升匿名保護。"
+                        question: "業務或銷售工作如果薪資包含高比例獎金，最應該先確認什麼？",
+                        options: ["底薪、獎金公式、發放時間與業績認定方式", "只看最高可能收入", "獎金一定每月固定", "不用了解業績目標"],
+                        answer: 0,
+                        explain: "業務薪資常由底薪與獎金組成，應先確認獎金計算公式、發放時間、退單處理與業績認定規則。"
                     },
                     {
-                        question: "若想改善職場薪資不平等，哪一個做法最有幫助？",
-                        options: ["完全不討論薪資", "建立清楚的職級、薪資範圍與升遷標準", "只靠員工自己猜", "禁止員工了解市場行情"],
-                        answer: 1,
-                        explain: "清楚的職級、薪資範圍與升遷標準能降低資訊不對稱，讓薪資制度更透明且可檢視。"
+                        question: "輪班或夜班工作在比較薪資時，除了月薪還要看什麼？",
+                        options: ["班表、夜班津貼、加班、休息時間與健康負荷", "只看公司名字", "只看職稱", "不用看工時"],
+                        answer: 0,
+                        explain: "輪班或夜班工作可能有額外津貼與健康負荷，應同時比較工時、休息、津貼與實際工作壓力。"
+                    },
+                    {
+                        question: "遠端或混合辦公工作在薪資外，還需要確認哪個條件？",
+                        options: ["設備補助、通訊規範、出勤方式與成果評估", "是否每天都不用工作", "是否永遠不用開會", "薪資一定比現場工作高"],
+                        answer: 0,
+                        explain: "遠端工作應確認設備、網路或通訊補助、會議與回報規範、出勤管理和成果評估方式。"
+                    },
+                    {
+                        question: "技術型工作在談薪時，哪一項最能增加說服力？",
+                        options: ["作品集、專案成果、證照或可驗證的技術能力", "只說自己很努力", "只比較朋友薪水", "完全不準備資料"],
+                        answer: 0,
+                        explain: "技術型工作談薪時，作品集、專案成果、證照和可量化貢獻會比單純主觀描述更有說服力。"
+                    },
+                    {
+                        question: "服務業工作在評估薪資是否合理時，除了底薪還要看什麼？",
+                        options: ["排班、加班、獎金、小費、休假與工作強度", "店面裝潢漂不漂亮", "制服顏色", "同事聊天有不有趣"],
+                        answer: 0,
+                        explain: "服務業薪資常受到排班、加班、獎金、小費、休假和工作強度影響，應整體評估。"
+                    },
+                    {
+                        question: "管理職和一般職在薪資比較時，最需要注意哪一點？",
+                        options: ["管理責任、決策壓力、績效目標與工時是否相符", "管理職一定比較高薪且輕鬆", "職稱有主管就不用看工作量", "只看辦公室座位大小"],
+                        answer: 0,
+                        explain: "管理職通常包含人員管理、決策責任與績效壓力，薪資比較時應檢視責任與報酬是否對等。"
                     }
                 ],
                 footerSource: "數據引用來源：勞動部與主計總處 110-113 年「各業受僱員工薪資統計表1 & 表2」",
@@ -564,7 +905,7 @@
                 reportSalary: "Monthly Salary",
                 gameEyebrow: "Knowledge Challenge",
                 gameTitle: "Knowledge Challenge",
-                gameDesc: "Answer scenario-based questions to test your understanding of pay transparency, equal pay, and workplace fairness.",
+                gameDesc: "Answer scenario-based questions to test your understanding of different work types, pay structures, and workplace conditions.",
                 gameScoreLabel: "Score",
                 gameRestart: "Restart",
                 gameNext: "Next",
@@ -577,64 +918,64 @@
                 gameResultLow: "There is still room to improve. Start by learning about fairness benchmarks, salary evidence, and workplace rights.",
                 gameQuestions: [
                     {
-                        question: "If two employees do similar work with similar responsibilities, what should salary evaluation be based on?",
-                        options: ["Gender and age", "Performance, responsibilities, and market salary", "Who negotiates more aggressively", "Who works overtime without records"],
-                        answer: 1,
-                        explain: "Salary fairness should be based on responsibilities, skills, performance, and market benchmarks, not gender, age, or whether someone dares to negotiate."
-                    },
-                    {
-                        question: "What is the main purpose of pay transparency?",
-                        options: ["Make everyone’s salary exactly the same", "Reduce information gaps and unreasonable differences", "Stop employees from discussing salary", "Let companies avoid raises"],
-                        answer: 1,
-                        explain: "Pay transparency does not mean identical salaries. It makes salary ranges and evaluation standards clearer, reducing unfair gaps."
-                    },
-                    {
-                        question: "When your salary is below the fairness benchmark, what is the best first step?",
-                        options: ["Quit immediately", "Organize achievements and salary evidence", "Post your manager’s name online", "Do nothing"],
-                        answer: 1,
-                        explain: "Start by organizing achievements, responsibilities, and market salary evidence. This supports future negotiation or job decisions."
-                    },
-                    {
-                        question: "When submitting anonymous salary data, which item should not be entered?",
-                        options: ["Industry", "Monthly salary or salary range", "Name, phone number, or employee ID", "Benefits"],
-                        answer: 2,
-                        explain: "Anonymous reporting should avoid names, phone numbers, emails, employee IDs, or anything personally identifiable."
-                    },
-                    {
-                        question: "What is the best use of the “fairness benchmark” in salary diagnosis?",
-                        options: ["As a reference for understanding market salary and preparing negotiation", "To guarantee that a company must give a raise", "To replace all personal ability and performance evaluation", "To prove that a company is definitely breaking the law"],
+                        question: "What is usually the main difference between full-time and part-time work?",
+                        options: ["Working hours, benefits, and pay calculation may differ", "Full-time work is always easier", "Part-time workers never have any rights", "Their salaries are always the same"],
                         answer: 0,
-                        explain: "The fairness benchmark is useful as a market reference and negotiation preparation tool, but it does not guarantee a raise or independently prove illegal behavior."
+                        explain: "Full-time and part-time roles often differ in working hours, benefits, pay calculation, and stability, so job title alone is not enough."
                     },
                     {
-                        question: "Before negotiating salary, which evidence best supports your request?",
-                        options: ["A friend’s casual salary comment", "Your achievements, expanded responsibilities, and market salary data", "Only saying your living costs increased", "Asking for a raise without preparation"],
-                        answer: 1,
-                        explain: "Salary negotiation is stronger when supported by concrete achievements, role scope, and market salary evidence."
+                        question: "When evaluating an internship salary or allowance, what should you check first?",
+                        options: ["Clear job duties, working hours, and learning goals", "Internships never need to be paid", "Whether unlimited overtime is allowed", "Company reputation is enough"],
+                        answer: 0,
+                        explain: "Internships should still have clear duties, hours, allowance or salary, learning goals, and responsibility boundaries."
                     },
                     {
-                        question: "If a company offers many benefits but salary stays below the fairness benchmark, what is the most reasonable view?",
-                        options: ["Benefits always mean fairness", "Benefits matter, but total compensation should still be reviewed", "More benefits should always mean lower salary", "Salary does not matter"],
-                        answer: 1,
-                        explain: "Benefits are part of total compensation, but they should not fully replace fair salary. Salary, benefits, and workload should be evaluated together."
+                        question: "Before accepting contract-based work, what should you confirm most carefully?",
+                        options: ["Contract period, salary, benefits, and renewal terms", "Whether the manager seems friendly", "No written document is needed", "High salary means no need to read terms"],
+                        answer: 0,
+                        explain: "For contract work, confirm the contract period, pay, benefits, job scope, renewal terms, and early termination conditions."
                     },
                     {
-                        question: "What does equal pay for equal work mainly emphasize?",
-                        options: ["Everyone in one company must earn the same salary", "Work with similar value and responsibility should receive fair and non-discriminatory pay", "Longer tenure must always mean higher pay", "The same job title can never have any difference"],
-                        answer: 1,
-                        explain: "Equal pay focuses on fair evaluation of work value, responsibility, and skills, avoiding unreasonable gaps caused by gender or other non-work factors."
+                        question: "What cost do freelancers often underestimate?",
+                        options: ["Taxes, insurance, equipment, communication time, and gaps between projects", "What to eat for lunch", "Company uniform", "The location of the time clock"],
+                        answer: 0,
+                        explain: "Freelance income should not be judged only by one project fee; taxes, insurance, equipment, communication time, and unpaid gaps also matter."
                     },
                     {
-                        question: "Why should anonymous salary platforms wait for enough samples before showing detailed statistics?",
-                        options: ["To make the website look slower", "To protect anonymity and reduce the risk of identifying one report", "To make data unusable", "To prevent anyone from seeing average salary"],
-                        answer: 1,
-                        explain: "When sample size is too small, individual reports may be easier to infer. Showing statistics after enough samples improves anonymity protection."
+                        question: "For sales jobs with a high bonus share, what should be confirmed first?",
+                        options: ["Base salary, bonus formula, payment timing, and sales recognition rules", "Only the highest possible income", "Bonuses are always fixed every month", "No need to understand sales targets"],
+                        answer: 0,
+                        explain: "Sales pay often combines base salary and bonuses, so the formula, timing, returns, and performance rules must be clear."
                     },
                     {
-                        question: "Which practice best helps reduce workplace pay inequality?",
-                        options: ["Never discussing salary", "Clear job levels, salary ranges, and promotion standards", "Letting employees guess everything", "Preventing employees from knowing market rates"],
-                        answer: 1,
-                        explain: "Clear job levels, salary ranges, and promotion standards reduce information gaps and make pay systems more transparent and reviewable."
+                        question: "When comparing shift or night-shift work, what should you check besides monthly salary?",
+                        options: ["Schedule, night-shift allowance, overtime, rest time, and health burden", "Only the company name", "Only the job title", "Working hours do not matter"],
+                        answer: 0,
+                        explain: "Shift or night work may include allowances and health burdens, so hours, rest, allowances, and workload should be reviewed together."
+                    },
+                    {
+                        question: "For remote or hybrid work, what condition should be checked besides salary?",
+                        options: ["Equipment support, communication rules, attendance method, and performance evaluation", "Whether you never need to work", "Whether meetings never happen", "Remote pay is always higher"],
+                        answer: 0,
+                        explain: "Remote work should clarify equipment support, internet or communication support, meetings, reporting rules, attendance, and evaluation methods."
+                    },
+                    {
+                        question: "For technical jobs, what best strengthens a salary negotiation?",
+                        options: ["Portfolio, project outcomes, certifications, or verifiable technical skills", "Only saying you work hard", "Only comparing with a friend’s salary", "Preparing no evidence"],
+                        answer: 0,
+                        explain: "For technical roles, portfolios, project results, certifications, and measurable contributions are more persuasive than subjective claims."
+                    },
+                    {
+                        question: "When evaluating service industry pay, what should you check besides base salary?",
+                        options: ["Scheduling, overtime, bonuses, tips, leave, and workload", "How pretty the store looks", "Uniform color", "Whether coworkers are fun to chat with"],
+                        answer: 0,
+                        explain: "Service industry pay can be affected by scheduling, overtime, bonuses, tips, leave, and workload, so the whole package matters."
+                    },
+                    {
+                        question: "When comparing management roles with non-management roles, what matters most?",
+                        options: ["Whether management responsibility, decision pressure, targets, and hours match the pay", "Management roles are always high-paying and easy", "A manager title means workload does not matter", "Only the size of the office seat"],
+                        answer: 0,
+                        explain: "Management roles often include people management, decision responsibility, and performance pressure, so pay should match the responsibility."
                     }
                 ],
                 footerSource: "Data sources: Ministry of Labor and DGBAS salary statistics tables, ROC Years 110-113.",
@@ -882,13 +1223,13 @@
         window.onload = function() {
             window.historyTrendChart = new Chart(document.getElementById('historyTrendChart').getContext('2d'), { 
                 type: 'line', 
-                data: { labels: ['110年', '111年', '112年', '113年'], datasets: [{ label: '全國性別薪資落差 (%)', data: [14.1, 13.2, 12.3, 12.5], borderColor: '#4f46e5', borderWidth: 5, fill: true, backgroundColor: 'rgba(79, 70, 229, 0.05)', tension: 0.3, pointRadius: 8, pointBackgroundColor: '#fff' }] }, 
+                data: { labels: ['110年', '111年', '112年', '113年'], datasets: [{ label: '全國性別薪資落差 (%)', data: [14.1, 13.2, 12.3, 12.5], borderColor: '#0f766e', borderWidth: 5, fill: true, backgroundColor: 'rgba(15, 118, 110, 0.10)', tension: 0.3, pointRadius: 8, pointBackgroundColor: '#fff' }] }, 
                 options: { maintainAspectRatio: false, scales: { y: { suggestedMin: 11, ticks: { callback: v => v + '%' } } } } 
             });
             
             window.ageChart = new Chart(document.getElementById('ageChart').getContext('2d'), { 
                 type: 'bar', 
-                data: { labels: ['未滿25', '25-29', '30-39', '40-49', '50-64'], datasets: [{ label: '113年全國中位數 (萬)', data: [38.1, 52.1, 58.1, 62.0, 57.9], backgroundColor: '#6366f1', borderRadius: 12 }] }, 
+                data: { labels: ['未滿25', '25-29', '30-39', '40-49', '50-64'], datasets: [{ label: '113年全國中位數 (萬)', data: [38.1, 52.1, 58.1, 62.0, 57.9], backgroundColor: '#14b8a6', borderRadius: 12 }] }, 
                 options: { maintainAspectRatio: false } 
             });
 
