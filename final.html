@@ -174,6 +174,13 @@
             box-shadow: 0 28px 70px rgba(0,0,0,.18);
         }
 
+        .intro-feature-card {
+            padding: 1.25rem;
+            border-radius: 1.5rem;
+            background: rgba(255,255,255,.62);
+            border: 1px solid rgba(16,16,16,.08);
+        }
+
         .section-label {
             color: var(--green);
             font-size: .78rem;
@@ -391,8 +398,8 @@
             <div class="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-12 mt-12 items-end">
                 <div>
                     <h1 class="hero-title text-black">
-                        <span class="title-line">數據驅動</span>
-                        <span class="title-line"><span class="title-accent">零門檻</span>看見公平</span>
+                        <span class="title-line">看見薪資</span>
+                        <span class="title-line"><span class="title-accent">看見公平</span></span>
                     </h1>
                 </div>
             </div>
@@ -400,24 +407,31 @@
 
         <div class="max-w-[1500px] mx-auto mt-16">
             <div class="project-visual rounded-[3rem] p-8 md:p-12">
-                <div class="floating-card max-w-md rounded-[2rem] p-7">
-                    <div class="text-sm font-black text-emerald-800 mb-3">EQUALPAY SYSTEM</div>
-                    <div class="text-5xl font-black tracking-tighter text-black">100%</div>
-                    <p class="mt-3 text-slate-600 font-bold">薪資公平診斷、匿名回報、知識小挑戰整合平台</p>
+                <div class="floating-card max-w-xl rounded-[2rem] p-8 md:p-10">
+                    <div class="text-sm font-black text-emerald-800 mb-5 tracking-[.18em] uppercase" id="introCardLabel">ABOUT EQUALPAY</div>
+                    <p id="introCardText1" class="text-2xl md:text-3xl leading-snug font-black text-black">
+                        EqualPay 是一個以薪資透明與職場公平為核心的互動式平台。
+                    </p>
+                    <p id="introCardText2" class="mt-5 text-slate-600 font-bold leading-loose">
+                        透過薪資診斷、匿名回報與知識小挑戰，幫助使用者了解自己的薪資是否接近市場基準，也讓更多真實職場資訊被看見。
+                    </p>
                 </div>
-                <div class="floating-card mt-8 ml-auto max-w-lg rounded-[2rem] p-7">
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                            <div class="text-3xl font-black text-emerald-800">4</div>
-                            <div class="text-xs font-black text-slate-500 mt-1">YEARS</div>
+                <div class="floating-card mt-8 ml-auto max-w-3xl rounded-[2rem] p-7 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                        <div class="intro-feature-card">
+                            <div class="text-xs font-black text-slate-400 mb-3">01</div>
+                            <h3 id="introFeature1Title" class="text-2xl font-black text-emerald-800 mb-3">薪資診斷</h3>
+                            <p id="introFeature1Desc" class="text-sm text-slate-600 font-bold leading-relaxed">快速比較個人薪資與市場公平基準</p>
                         </div>
-                        <div>
-                            <div class="text-3xl font-black text-emerald-800">18+</div>
-                            <div class="text-xs font-black text-slate-500 mt-1">INDUSTRIES</div>
+                        <div class="intro-feature-card">
+                            <div class="text-xs font-black text-slate-400 mb-3">02</div>
+                            <h3 id="introFeature2Title" class="text-2xl font-black text-emerald-800 mb-3">匿名回報</h3>
+                            <p id="introFeature2Desc" class="text-sm text-slate-600 font-bold leading-relaxed">分享真實公司的薪資與福利資訊</p>
                         </div>
-                        <div>
-                            <div class="text-3xl font-black text-emerald-800">SDG10</div>
-                            <div class="text-xs font-black text-slate-500 mt-1">GOAL</div>
+                        <div class="intro-feature-card">
+                            <div class="text-xs font-black text-slate-400 mb-3">03</div>
+                            <h3 id="introFeature3Title" class="text-2xl font-black text-emerald-800 mb-3">知識挑戰</h3>
+                            <p id="introFeature3Desc" class="text-sm text-slate-600 font-bold leading-relaxed">認識不同工作類型與薪資條件</p>
                         </div>
                     </div>
                 </div>
@@ -737,8 +751,16 @@
                 navGame: "知識小挑戰",
                 status: "已自動載入 110-113 年官方完整數據",
                 badge: "SDG 10：減少職場不平等",
-                heroTitle: "數據驅動，<br>零門檻看見公平",
+                heroTitle: `<span class="title-line">看見薪資</span><span class="title-line"><span class="title-accent">看見公平</span></span>`,
                 heroDesc: "無需上傳任何檔案。本系統已內建主計總處 110-113 年所有統計數據，點擊即可獲得精準的薪資診斷與行動建議。",
+                introCardLabel: "ABOUT EQUALPAY",
+                introCardText1: "EqualPay 是一個以薪資透明與職場公平為核心的互動式平台。",
+                introCardText2: "透過薪資診斷、匿名回報與知識小挑戰，幫助使用者了解自己的薪資是否接近市場基準，也讓更多真實職場資訊被看見。",
+                introFeatures: [
+                    { title: "薪資診斷", desc: "快速比較個人薪資與市場公平基準" },
+                    { title: "匿名回報", desc: "分享真實公司的薪資與福利資訊" },
+                    { title: "知識挑戰", desc: "認識不同工作類型與薪資條件" }
+                ],
                 trendTitle: "110-113 全國性別薪資落差趨勢",
                 ageTitle: "113年全產業年齡別薪資中位數",
                 trendNote: "※ 自動分析：全國性別薪資差距從 14.1% 逐步縮減至 12.5%。",
@@ -893,8 +915,16 @@
                 navGame: "Knowledge Challenge",
                 status: "Loaded official data from ROC Years 110-113",
                 badge: "SDG 10: Reducing Workplace Inequality",
-                heroTitle: "Data-driven insights,<br>fairness with zero barriers",
+                heroTitle: `<span class="title-line">See salary</span><span class="title-line"><span class="title-accent">see fairness</span></span>`,
                 heroDesc: "No file upload required. This system includes official salary statistics from ROC Years 110-113 and provides instant salary diagnosis and action suggestions.",
+                introCardLabel: "ABOUT EQUALPAY",
+                introCardText1: "EqualPay is an interactive platform centered on salary transparency and workplace fairness.",
+                introCardText2: "Through salary diagnosis, anonymous reporting, and knowledge challenges, it helps users understand whether their salary is close to the market benchmark and makes more real workplace information visible.",
+                introFeatures: [
+                    { title: "Salary Diagnosis", desc: "Quickly compare personal salary with the market fairness benchmark" },
+                    { title: "Anonymous Report", desc: "Share real company salary and benefits information" },
+                    { title: "Knowledge Challenge", desc: "Learn about different work types and salary conditions" }
+                ],
                 trendTitle: "National Gender Pay Gap Trend, ROC Years 110-113",
                 ageTitle: "2024 Median Salary by Age Group Across Industries",
                 trendNote: "※ Auto analysis: the national gender pay gap changed from 14.1% to 12.5%.",
@@ -1134,7 +1164,16 @@
             if (heroBadge) heroBadge.textContent = t.badge;
             const heroTitle = document.querySelector('header h1');
             if (heroTitle) heroTitle.innerHTML = t.heroTitle;
-            setText('header p', t.heroDesc);
+
+            setText('#introCardLabel', t.introCardLabel);
+            setText('#introCardText1', t.introCardText1);
+            setText('#introCardText2', t.introCardText2);
+            setText('#introFeature1Title', t.introFeatures[0].title);
+            setText('#introFeature1Desc', t.introFeatures[0].desc);
+            setText('#introFeature2Title', t.introFeatures[1].title);
+            setText('#introFeature2Desc', t.introFeatures[1].desc);
+            setText('#introFeature3Title', t.introFeatures[2].title);
+            setText('#introFeature3Desc', t.introFeatures[2].desc);
 
             const statTitles = document.querySelectorAll('#stats h3');
             if (statTitles[0]) statTitles[0].innerHTML = `<span class="w-2 h-6 bg-indigo-600 rounded-full"></span>${t.trendTitle}`;
@@ -1952,4 +1991,3 @@ renderAnonymousReports();
 </script>
 </body>
 </html>
-
